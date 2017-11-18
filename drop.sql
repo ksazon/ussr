@@ -78,7 +78,6 @@ DROP TABLE cl_payment_line CASCADE  ;
 DROP TABLE cl_unconfirmed CASCADE  ;
 DROP TABLE client CASCADE  ;
 DROP TABLE company_branch CASCADE  ;
-DROP TABLE company_description;
 DROP TABLE contact CASCADE  ;
 DROP TABLE contact_type CASCADE  ;
 DROP TABLE country_dict CASCADE  ;

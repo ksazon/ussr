@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 
 from .models import *
@@ -9,11 +9,17 @@ from .models import *
 def index(request):
     """Strona główna dla aplikacji ussr."""
     return render(request, 'company/index.html')
-
+#
 # def machinetypes(request):
 #     machinetypes = MachineType.objects.all()
 #     context = {'machinetypes': machinetypes}
 #     return render(request, 'company/machinetypes.html', context)
+#
+# def machinetype(request, machinetype_id):
+#     machinetype = MachineType.objects.get(id=machinetype_id)
+#     machines = machinetype.machine_set.all()
+#     context = {'machinetype': machinetype, 'machines': machines}
+#     return render(request, 'company/machinetype.html', context)
 #
 # def new_machinetype(request):
 #     if request.method != 'POST':

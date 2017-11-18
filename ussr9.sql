@@ -4,8 +4,6 @@
 --   type:      Oracle Database 12c
 
 
-
-
 CREATE TABLE cl_blocked_reason_dict
   (
     id_cl_blocked_reason_dict VARCHAR (10) NOT NULL ,
@@ -175,12 +173,6 @@ CREATE TABLE company_branch
   ) ;
 ALTER TABLE company_branch ADD CONSTRAINT company_branch_PK PRIMARY KEY ( id_company_branch ) ;
 
-CREATE TABLE company_description
-  (
-    id_company_description VARCHAR (10) NOT NULL ,
-    description_long VARCHAR (10000),
-    description_short VARCHAR (5000)
-  ) ;
 
 CREATE TABLE contact
   (
@@ -798,7 +790,7 @@ GROUP BY client.id_client,
   client.blocked_notes,
   cl_blocked_reason_dict.blocked_reason_name,
   cl_payment.is_closed
-HAVING cl_payment.is_closed = FALSE
+HAVING cl_payment.is_closed = FALSE 
 ;
 
 
@@ -809,7 +801,7 @@ CREATE OR REPLACE VIEW CLIENT_BLOCK_V  AS
 SELECT client.id_client,
   client.blocked_notes,
   client.blocked_reason_id
-FROM client
+FROM client 
 ;
 
 
@@ -842,7 +834,7 @@ ON service.id_service = cl_communication_log.service
 INNER JOIN se_dict
 ON se_dict.id_se_dict = service.service_code
 LEFT JOIN cl_communication_reason
-ON cl_communication_reason.id_client_communication_reason = cl_communication_log.communication_reason
+ON cl_communication_reason.id_client_communication_reason = cl_communication_log.communication_reason 
 ;
 
 
@@ -882,7 +874,7 @@ SELECT client.id_client,
   contact.notes AS contact_notes
 FROM client
 LEFT JOIN contact
-ON contact.id_contact = client.contact
+ON contact.id_contact = client.contact 
 ;
 
 
@@ -908,7 +900,7 @@ GROUP BY client.id_client,
   client.last_name,
   client.client_name,
   client.is_blocked,
-  client.notes
+  client.notes 
 ;
 
 
@@ -928,7 +920,7 @@ SELECT client.id_client,
 FROM client
 LEFT JOIN contact
 ON contact.id_contact    = client.contact
-WHERE client.is_rejected = FALSE
+WHERE client.is_rejected = FALSE 
 ;
 
 
@@ -944,7 +936,7 @@ SELECT cl_params.max_debt,
   cl_params.max_worktime_wo_conf_minutes,
   cl_params.default_currency,
   cl_params.allow_new_no_contact
-FROM cl_params
+FROM cl_params 
 ;
 
 
@@ -970,7 +962,7 @@ INNER JOIN service
 ON service.id_service = cl_payment_line.service
 AND client.id_client  = service.client
 INNER JOIN se_dict
-ON se_dict.id_se_dict = service.service_code
+ON se_dict.id_se_dict = service.service_code 
 ;
 
 
@@ -993,7 +985,7 @@ SELECT cl_payment.id_cl_payment,
   cl_payment.notes
 FROM cl_payment
 LEFT JOIN client
-ON client.id_client = cl_payment.client
+ON client.id_client = cl_payment.client 
 ;
 
 
@@ -1017,7 +1009,7 @@ SELECT cl_payment.id_cl_payment,
 FROM cl_payment
 LEFT JOIN client
 ON client.id_client        = cl_payment.client
-WHERE cl_payment.is_closed = TRUE
+WHERE cl_payment.is_closed = TRUE 
 ;
 
 
@@ -1042,7 +1034,7 @@ FROM cl_payment
 LEFT JOIN client
 ON client.id_client               = cl_payment.client
 WHERE cl_payment.posted_datetime IS NOT NULL
-AND cl_payment.paid_datetime     IS NULL
+AND cl_payment.paid_datetime     IS NULL 
 ;
 
 
@@ -1066,7 +1058,7 @@ SELECT cl_payment.id_cl_payment,
 FROM cl_payment
 LEFT JOIN client
 ON client.id_client               = cl_payment.client
-WHERE cl_payment.posted_datetime IS NULL
+WHERE cl_payment.posted_datetime IS NULL 
 ;
 
 
@@ -1111,7 +1103,7 @@ ON company_branch.id_company_branch = cl_payment.company_branch
 INNER JOIN contact contact_company_branch
 ON contact_company_branch.id_contact = company_branch.contact
 LEFT JOIN contact contact_client
-ON client.contact = contact_client.id_contact
+ON client.contact = contact_client.id_contact 
 ;
 
 
@@ -1126,7 +1118,7 @@ SELECT discount_dict.id_discount_dict,
   discount_dict.discount_percent,
   discount_dict.valid_from,
   discount_dict.valid_to
-FROM discount_dict
+FROM discount_dict 
 ;
 
 
@@ -1137,7 +1129,7 @@ CREATE OR REPLACE VIEW LOCATION_TYPE_DETAILS_V  AS
 SELECT location_type.id_location_type,
   location_type.location_type_name,
   location_type.location_capacity
-FROM location_type
+FROM location_type 
 ;
 
 
@@ -1154,7 +1146,7 @@ LEFT JOIN location
 ON location_type.id_location_type = location.location_type
 GROUP BY location_type.id_location_type,
   location_type.location_type_name,
-  location_type.location_capacity
+  location_type.location_capacity 
 ;
 
 
@@ -1170,7 +1162,7 @@ SELECT location.id_location,
   location.notes
 FROM location
 LEFT JOIN location_type
-ON location_type.id_location_type = location.location_type
+ON location_type.id_location_type = location.location_type 
 ;
 
 
@@ -1185,7 +1177,7 @@ SELECT machine.id_machine,
   machine.notes
 FROM machine
 INNER JOIN machine_type
-ON machine_type.id_machine_type = machine.machine_type
+ON machine_type.id_machine_type = machine.machine_type 
 ;
 
 
@@ -1195,7 +1187,7 @@ ON machine_type.id_machine_type = machine.machine_type
 CREATE OR REPLACE VIEW MACHINE_TYPE_DETAILS_V  AS
 SELECT machine_type.id_machine_type,
   machine_type.machine_type_name
-FROM machine_type
+FROM machine_type 
 ;
 
 
@@ -1210,7 +1202,7 @@ FROM machine_type
 LEFT JOIN machine
 ON machine_type.id_machine_type = machine.machine_type
 GROUP BY machine_type.id_machine_type,
-  machine_type.machine_type_name
+  machine_type.machine_type_name 
 ;
 
 
@@ -1227,7 +1219,7 @@ SELECT machine.id_machine,
   machine.notes
 FROM machine
 LEFT JOIN machine_type
-ON machine_type.id_machine_type = machine.machine_type
+ON machine_type.id_machine_type = machine.machine_type 
 ;
 
 
@@ -1252,7 +1244,7 @@ FROM cl_payment
 LEFT JOIN client
 ON client.id_client        = cl_payment.client
 WHERE cl_payment.is_closed = FALSE
-AND cl_payment.due_date    < CURRENT_DATE
+AND cl_payment.due_date    < CURRENT_DATE 
 ;
 
 
@@ -1290,7 +1282,7 @@ GROUP BY resources_usage.calendar_date,
   se_dict.se_dict_name,
   worker.first_name,
   worker.last_name,
-  machine.machine_name
+  machine.machine_name 
 ;
 
 
@@ -1299,7 +1291,7 @@ GROUP BY resources_usage.calendar_date,
 
 CREATE OR REPLACE VIEW RESOURCES_USAGE_PARAMS_V  AS
 SELECT resources_usage_params.allow_using_machine_without_service_days_before_date
-FROM resources_usage_params
+FROM resources_usage_params 
 ;
 
 
@@ -1350,7 +1342,7 @@ GROUP BY service.id_service,
   service.create_invoice,
   service.planned_start,
   service.created_datetime,
-  service.planned_end
+  service.planned_end 
 ;
 
 
@@ -1370,7 +1362,7 @@ SELECT service.service_code,
   service.finished_info_email,
   service.create_invoice,
   service.notes
-FROM service
+FROM service 
 ;
 
 
@@ -1390,7 +1382,7 @@ SELECT se_dict.id_se_dict,
   se_requirement.worker_ability
 FROM se_dict
 LEFT JOIN se_requirement
-ON se_dict.id_se_dict = se_requirement.service_code
+ON se_dict.id_se_dict = se_requirement.service_code 
 ;
 
 
@@ -1405,7 +1397,7 @@ SELECT se_dict.id_se_dict,
   se_dict.avg_time,
   se_dict.base_price,
   se_dict.notes
-FROM se_dict
+FROM se_dict 
 ;
 
 
@@ -1440,7 +1432,7 @@ ON location.id_location = service.location
 LEFT JOIN cl_payment_line
 ON service.id_service = cl_payment_line.service
 LEFT JOIN cl_payment
-ON cl_payment.id_cl_payment = cl_payment_line.payment
+ON cl_payment.id_cl_payment = cl_payment_line.payment 
 ;
 
 
@@ -1448,7 +1440,7 @@ ON cl_payment.id_cl_payment = cl_payment_line.payment
 
 
 CREATE OR REPLACE VIEW TIME_SLOT_PARAMS_V  AS
-SELECT time_slot_params.time_slot_minutes FROM time_slot_params
+SELECT time_slot_params.time_slot_minutes FROM time_slot_params 
 ;
 
 
@@ -1460,7 +1452,7 @@ SELECT workday_calendar.id_workday_calendar,
   workday_calendar.is_workday,
   workday_calendar.work_start,
   workday_calendar.work_end
-FROM workday_calendar
+FROM workday_calendar 
 ;
 
 
@@ -1471,7 +1463,7 @@ CREATE OR REPLACE VIEW WORKER_ABILITY_DETAILS_V  AS
 SELECT wo_ability.worker,
   wo_ability.worker_ability,
   wo_ability.notes
-FROM wo_ability
+FROM wo_ability 
 ;
 
 
@@ -1484,7 +1476,7 @@ SELECT wo_ability_dict.id_wo_ability_dict,
   wo_ability_group_dict.ability_group_name
 FROM wo_ability_dict
 LEFT JOIN wo_ability_group_dict
-ON wo_ability_group_dict.id_wo_ablility_group_dict = wo_ability_dict.ability_group
+ON wo_ability_group_dict.id_wo_ablility_group_dict = wo_ability_dict.ability_group 
 ;
 
 
@@ -1503,7 +1495,7 @@ LEFT JOIN wo_ability
 ON wo_ability_dict.id_wo_ability_dict = wo_ability.worker_ability
 GROUP BY wo_ability_dict.id_wo_ability_dict,
   wo_ability_dict.ability_name,
-  wo_ability_group_dict.ability_group_name
+  wo_ability_group_dict.ability_group_name 
 ;
 
 
@@ -1513,7 +1505,7 @@ GROUP BY wo_ability_dict.id_wo_ability_dict,
 CREATE OR REPLACE VIEW WORKER_ABILITY_GROUP_DICT_DETAILS_V  AS
 SELECT wo_ability_group_dict.id_wo_ablility_group_dict,
   wo_ability_group_dict.ability_group_name
-FROM wo_ability_group_dict
+FROM wo_ability_group_dict 
 ;
 
 
@@ -1528,7 +1520,7 @@ FROM wo_ability_group_dict
 INNER JOIN wo_ability_dict
 ON wo_ability_group_dict.id_wo_ablility_group_dict = wo_ability_dict.ability_group
 GROUP BY wo_ability_group_dict.ability_group_name,
-  wo_ability_group_dict.id_wo_ablility_group_dict
+  wo_ability_group_dict.id_wo_ablility_group_dict 
 ;
 
 
@@ -1549,7 +1541,7 @@ LEFT JOIN wo_ability_dict
 ON wo_ability_dict.id_wo_ability_dict = wo_ability.worker_ability
 LEFT JOIN wo_ability_group_dict
 ON wo_ability_group_dict.id_wo_ablility_group_dict = wo_ability_dict.ability_group
-WHERE worker.active                                = TRUE
+WHERE worker.active                                = TRUE 
 ;
 
 
@@ -1569,7 +1561,7 @@ INNER JOIN worker
 ON worker.id_worker = wo_absence.worker
 LEFT JOIN wo_absence_type
 ON wo_absence_type.id_wo_absence_type = wo_absence.absence_type
-ORDER BY wo_absence.start_datetime
+ORDER BY wo_absence.start_datetime 
 ;
 
 
@@ -1588,7 +1580,7 @@ FROM wo_absence
 INNER JOIN worker
 ON worker.id_worker = wo_absence.worker
 LEFT JOIN workday_calendar
-ON workday_calendar.id_workday_calendar = wo_absence.start_datetime
+ON workday_calendar.id_workday_calendar = wo_absence.start_datetime 
 ;
 
 
@@ -1610,7 +1602,7 @@ LEFT JOIN wo_absence_type
 ON wo_absence_type.id_wo_absence_type = wo_absence.absence_type
 WHERE wo_absence.start_datetime       < CURRENT_TIMESTAMP
 AND wo_absence.end_datetime           > CURRENT_TIMESTAMP
-ORDER BY wo_absence.start_datetime
+ORDER BY wo_absence.start_datetime 
 ;
 
 
@@ -1629,7 +1621,7 @@ FROM wo_absence
 INNER JOIN wo_absence_type
 ON wo_absence_type.id_wo_absence_type = wo_absence.absence_type
 INNER JOIN worker
-ON worker.id_worker = wo_absence.worker
+ON worker.id_worker = wo_absence.worker 
 ;
 
 
@@ -1650,7 +1642,7 @@ ON worker.id_worker = wo_absence.worker
 LEFT JOIN wo_absence_type
 ON wo_absence_type.id_wo_absence_type = wo_absence.absence_type
 WHERE wo_absence.end_datetime         < CURRENT_TIMESTAMP
-ORDER BY wo_absence.start_datetime
+ORDER BY wo_absence.start_datetime 
 ;
 
 
@@ -1671,7 +1663,7 @@ ON worker.id_worker = wo_absence.worker
 LEFT JOIN wo_absence_type
 ON wo_absence_type.id_wo_absence_type = wo_absence.absence_type
 WHERE wo_absence.start_datetime       > CURRENT_TIMESTAMP
-ORDER BY wo_absence.start_datetime
+ORDER BY wo_absence.start_datetime 
 ;
 
 
@@ -1692,7 +1684,7 @@ ON worker.id_worker = wo_absence.worker
 LEFT JOIN wo_absence_type
 ON wo_absence_type.id_wo_absence_type    = wo_absence.absence_type
 WHERE wo_absence_type.id_wo_absence_type = 'GODZ'
-ORDER BY wo_absence.start_datetime
+ORDER BY wo_absence.start_datetime 
 ;
 
 
@@ -1715,7 +1707,7 @@ ON wo_absence_type.id_wo_absence_type      = wo_absence.absence_type
 WHERE (wo_absence_type.id_wo_absence_type != 'CHO')
 OR (wo_absence_type.id_wo_absence_type    != 'WYP')
 OR (wo_absence_type.id_wo_absence_type    != 'GODZ')
-ORDER BY wo_absence.start_datetime
+ORDER BY wo_absence.start_datetime 
 ;
 
 
@@ -1736,7 +1728,7 @@ ON worker.id_worker = wo_absence.worker
 LEFT JOIN wo_absence_type
 ON wo_absence_type.id_wo_absence_type    = wo_absence.absence_type
 WHERE wo_absence_type.id_wo_absence_type = 'WYP'
-ORDER BY wo_absence.start_datetime
+ORDER BY wo_absence.start_datetime 
 ;
 
 
@@ -1757,7 +1749,7 @@ ON worker.id_worker = wo_absence.worker
 INNER JOIN wo_absence_type
 ON wo_absence_type.id_wo_absence_type    = wo_absence.absence_type
 WHERE wo_absence_type.id_wo_absence_type = 'CHO'
-ORDER BY wo_absence.start_datetime
+ORDER BY wo_absence.start_datetime 
 ;
 
 
@@ -1783,7 +1775,7 @@ SELECT worker.id_worker,
   contact.notes AS notes1
 FROM worker
 INNER JOIN contact
-ON contact.id_contact = worker.contact
+ON contact.id_contact = worker.contact 
 ;
 
 
@@ -1793,7 +1785,7 @@ ON contact.id_contact = worker.contact
 CREATE OR REPLACE VIEW WORKER_GROUP_DICT_DETAILS_V  AS
 SELECT wo_group_dict.id_wo_group_dict,
   wo_group_dict.worker_group_name
-FROM wo_group_dict
+FROM wo_group_dict 
 ;
 
 
@@ -1808,7 +1800,7 @@ FROM wo_group_dict
 LEFT JOIN wo_group
 ON wo_group_dict.id_wo_group_dict = wo_group.worker_group
 GROUP BY wo_group_dict.id_wo_group_dict,
-  wo_group_dict.worker_group_name
+  wo_group_dict.worker_group_name 
 ;
 
 
@@ -1821,7 +1813,7 @@ SELECT wo_group_privilege.view_id,
   wo_group_dict.worker_group_name
 FROM wo_group_privilege
 LEFT JOIN wo_group_dict
-ON wo_group_dict.id_wo_group_dict = wo_group_privilege.worker_group
+ON wo_group_dict.id_wo_group_dict = wo_group_privilege.worker_group 
 ;
 
 
@@ -1851,7 +1843,7 @@ GROUP BY worker.id_worker,
   worker.worker_title,
   worker.notes
 HAVING worker.active               = TRUE
-AND MIN(wo_absence.start_datetime) > CURRENT_DATE
+AND MIN(wo_absence.start_datetime) > CURRENT_DATE 
 ;
 
 
@@ -1880,7 +1872,7 @@ GROUP BY worker.id_worker,
   worker.last_name,
   worker.worker_title,
   worker.notes
-HAVING MIN(wo_absence.start_datetime) > CURRENT_DATE
+HAVING MIN(wo_absence.start_datetime) > CURRENT_DATE 
 ;
 
 
@@ -1910,7 +1902,7 @@ GROUP BY worker.id_worker,
   worker.worker_title,
   worker.notes
 HAVING worker.active               = FALSE
-AND MIN(wo_absence.start_datetime) > CURRENT_DATE
+AND MIN(wo_absence.start_datetime) > CURRENT_DATE 
 ;
 
 
@@ -1939,7 +1931,7 @@ GROUP BY worker.id_worker,
   worker.last_name,
   worker.worker_title,
   worker.notes
-HAVING MIN(wo_absence.start_datetime) > CURRENT_DATE
+HAVING MIN(wo_absence.start_datetime) > CURRENT_DATE 
 ;
 
 
@@ -1964,7 +1956,7 @@ ON wo_group_dict.id_wo_group_dict = wo_group.worker_group
 LEFT JOIN wo_absence
 ON worker.id_worker = wo_absence.worker
 WHERE wo_absence.start_datetime < CURRENT_TIMESTAMP
-AND wo_absence.end_datetime           > CURRENT_TIMESTAMP
+AND wo_absence.end_datetime           > CURRENT_TIMESTAMP 
 GROUP BY worker.id_worker,
   worker.active,
   worker.first_name,
@@ -1979,7 +1971,7 @@ GROUP BY worker.id_worker,
 
 
 CREATE OR REPLACE VIEW WORKER_USER_DETAILS_V  AS
-SELECT wo_user.app_user, wo_user.worker FROM wo_user
+SELECT wo_user.app_user, wo_user.worker FROM wo_user 
 ;
 
 
@@ -1996,5 +1988,5 @@ SELECT wo_user.app_user,
   worker.notes
 FROM wo_user
 LEFT JOIN worker
-ON worker.id_worker = wo_user.worker
+ON worker.id_worker = wo_user.worker 
 ;

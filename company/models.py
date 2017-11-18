@@ -28,20 +28,6 @@ class CompanyBranch(models.Model):
         return self.id_company_branch
 
 
-class CompanyDescription(models.Model):
-    id_company_description = models.CharField(primary_key=True, max_length=10)
-    description_long = models.CharField(max_length=10000, blank=True, null=True)
-    description_short = models.CharField(max_length=5000, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'company_description'
-        verbose_name = 'Opis przedsiębiorstwa'
-        verbose_name_plural = 'Opisy przedsiębiorstwa'
-
-    def __str__(self):
-        return self.id_company_description
-
 class Location(models.Model):
     id_location = models.AutoField(primary_key=True)
     location_name = models.CharField(unique=True, max_length=200, blank=True, null=True)

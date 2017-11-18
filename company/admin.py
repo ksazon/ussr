@@ -33,7 +33,6 @@ from .models import *
 # admin.site.register(Client, ClientAdmin)
 
 admin.site.register(CompanyBranch)
-admin.site.register(CompanyDescription)
 # admin.site.register(Address)
 # admin.site.register(ContactType)
 # admin.site.register(CountryDict)
