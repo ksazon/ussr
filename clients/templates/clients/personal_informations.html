@@ -1,0 +1,11 @@
+{% if not_registered_client_in_client_tab %}
+<p> Nie jesteś zarejestrowany w tabeli Klienci</p>
+
+{% else %}
+  <form method="post" action="{% url 'clients:personal_informations' %}">
+      {% csrf_token %}
+      {{ name_form.as_p }}
+      {{ address_form.as_p }}
+      <input type="submit" value="Submit" />
+  </form>
+{% endif %}

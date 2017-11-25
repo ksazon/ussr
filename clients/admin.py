@@ -15,11 +15,13 @@ admin.site.register(ClDiscount)
 admin.site.register(ClParams)
 admin.site.register(ClPayment)
 admin.site.register(ClPaymentLine)
-admin.site.register(ClUnconfirmed)
+# admin.site.register(ClUnconfirmed)
 # admin.site.register(Client)
 class ClientAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name')
 admin.site.register(Client, ClientAdmin)
+admin.site.register(DiscountDict)
+admin.site.register(DiscountScope)
 #admin.site.register(Contact)
 
 # class ContactInline(admin.TabularInline):

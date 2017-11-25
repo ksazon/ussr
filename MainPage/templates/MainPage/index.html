@@ -2,13 +2,20 @@
 
 {% block content %}
 
-    <h1 style="height: 200px; text-align: center; margin: 100px; margin-bottom:10px">
+    <h1 id = "title_box">
+      <p id = "title_text">
       {{ maincompany.company_name }}
+      <p>
     </h1>
 
-    <h2 style = "width: 70%; margin-left: 15%; margin-bottom: 30px; text-align: center;">
+    <h2 style = "width: 70%; margin-left: 15%; margin-bottom: 30px; text-align: center; margin-top: 0px;">
       {{ shortdescription.description_short }}
     </h2>
-<iframe width="854" height="480" src="https://www.youtube.com/embed/dLLRUtql_ys" frameborder="0" gesture="media" style="margin-left: 19%" allowfullscreen></iframe>
+
+    <h2 class = "text-centered text-big">Zarezerwuj nasze usługi już teraz!</h2>
+
+    <div id = "reservation-box">
+      <button type="button" class = "btn btn-primary" id = "reservation-button">Zarezerwuj</button>
+    </div>
 
 {% endblock content %}

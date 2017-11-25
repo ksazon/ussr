@@ -1,16 +1,16 @@
-{% extends 'firma/base.html' %}
+{% extends 'machines/base.html' %}
 
 {% block content %}
 
   <p>Temat: {{ machinetype }}</p>
-  <a href="{% url 'firma:new_machine' machinetype.id %}">Dodaj nową maszynę</a>
+  <a href="{% url 'machines:new_machine' machinetype.id_machine_type %}">Dodaj nową maszynę</a>
 
   <p>Dostępne maszyny:</p>
   <ul>
   {% for machine in machines %}
     <li>
       <p>{{ machine.machine_name }}</p>
-	  <a href="{% url 'firma:edit_machine' machine.id %}">Edytuj maszyne</a>
+	  <a href="{% url 'machines:edit_machine' machine.id_machine %}">Edytuj maszynę</a>
     </li>
   {% empty %}
     <li>

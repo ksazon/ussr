@@ -1,6 +1,51 @@
 footer {
-  background-color: #2F4F4F;
   font-size: 20px;
   text-align: center;
+}
 
+#title_box{
+  font-weight: bold;
+  font-size: 50px;
+  display: flex;
+  height:200px;
+  flex-direction: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+#title_text{
+  margin:auto;
+  text-align: center;
+}
+
+.text-centered{
+  text-align: center;
+}
+
+.text-big{
+  font-size: 40px;
+}
+
+#reservation-button{
+  background-color: rgb(71, 168, 25);
+  border-color: rgb(19, 88, 15);
+  margin:auto;
+  width:330px;
+  height: 120px;
+  font-size: 45px;
+  resize: both;
+  overflow: auto;
+
+}
+
+#reservation-box{
+  display: flex;
+  height:200px;
+  flex-direction: center;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+
+#contact-form-box{
+  margin-left:200px;
 }

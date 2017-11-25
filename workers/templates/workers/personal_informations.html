@@ -1,0 +1,11 @@
+{% if not_registered_worker_in_worker_tab %}
+<p> Nie jesteś zarejestrowany w tabeli Pracownicy</p>
+
+{% else %}
+  <form method="post" action="{% url 'workers:personal_informations' %}">
+      {% csrf_token %}
+      {{ name_form.as_p }}
+      {{ address_form.as_p }}
+      <input type="submit" value="Submit" />
+  </form>
+{% endif %}

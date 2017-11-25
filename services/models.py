@@ -6,19 +6,21 @@ from django.db import models
 #from workers.models import WoAbility
 
 class SeDict(models.Model):
-    id_se_dict = models.CharField(primary_key=True, max_length=10)
-    se_dict_name = models.CharField(unique=True, max_length=200)
-    base_price = models.FloatField(blank=True, null=True)
-    location_type = models.ForeignKey('company.LocationType', models.DO_NOTHING, db_column='location_type', blank=True, null=True)
-    avg_time = models.IntegerField(blank=True, null=True)
-    continous = models.BooleanField()
-    notes = models.CharField(max_length=400, blank=True, null=True)
+    id_se_dict = models.CharField(primary_key=True, max_length=10, verbose_name='Id')
+    se_dict_name = models.CharField(unique=True, max_length=200, verbose_name='Nazwa')
+    base_price = models.FloatField(blank=True, null=True, verbose_name='Cena bazowa')
+    location_type = models.ForeignKey('company.LocationType', models.DO_NOTHING, db_column='location_type', blank=True, null=True, verbose_name='Wymagany typ lokacji')
+    # TODO do ukrycia
+    avg_time = models.IntegerField(blank=True, null=True, verbose_name='Przeciętny czas wykonania')
+    # TODO do ukrycia
+    continous = models.BooleanField(default=True, verbose_name='Czy musi być wykonywane bez przerw')
+    notes = models.CharField(max_length=400, blank=True, null=True, verbose_name='Uwagi')
 
     class Meta:
         managed = False
         db_table = 'se_dict'
         verbose_name = 'Serwis'
-        verbose_name_plural = 'Slownik serwisow'
+        verbose_name_plural = 'Słownik serwisów'
 
     def __str__(self):
         return str(self.id_se_dict)
@@ -26,36 +28,38 @@ class SeDict(models.Model):
 
 #nie korzystamy
 class SeDiscount(models.Model):
-    id_se_discount = models.AutoField(primary_key=True)
-    discount = models.ForeignKey('clients.DiscountDict', models.DO_NOTHING, db_column='discount')
-    service = models.ForeignKey('Service', models.DO_NOTHING, db_column='service')
-    company_branch = models.ForeignKey('company.CompanyBranch', models.DO_NOTHING, db_column='company_branch', default='main', related_name = '+')
+    id_se_discount = models.AutoField(primary_key=True, verbose_name='Id')
+    discount = models.ForeignKey('clients.DiscountDict', models.DO_NOTHING, db_column='discount', verbose_name='Zniżka')
+    service = models.ForeignKey('Service', models.DO_NOTHING, db_column='service', verbose_name='Serwis')
+    company_branch = models.ForeignKey('company.CompanyBranch', models.DO_NOTHING, db_column='company_branch', default='main', related_name = '+', verbose_name='Oddział')
 
     class Meta:
         managed = False
         db_table = 'se_discount'
-        verbose_name = 'Znizka na serwis'
-        verbose_name_plural = 'Znizki na serwis'
+        verbose_name = 'Zniżka na serwis'
+        verbose_name_plural = 'Zniżki na serwis'
 
     def __str__(self):
-        return str(self.id_sex_dict)
+        return str(self.id_se_discount)
 
 
 class SeRequirement(models.Model):
-    id_se_requirement = models.AutoField(primary_key=True)
-    service_code = models.ForeignKey(SeDict, models.DO_NOTHING, db_column='service_code')
-    machine_type = models.ForeignKey('machines.MachineType', models.DO_NOTHING, db_column='machine_type', blank=True, null=True)
-    worker_ability = models.ForeignKey('workers.WoAbility', models.DO_NOTHING, db_column='worker_ability', blank=True, null=True, related_name = '+')
-    qty = models.FloatField(blank=True, null=True)
-    activity_sort_order = models.IntegerField(blank=True, null=True)
-    activity_name = models.CharField(max_length=200, blank=True, null=True)
-    time_minutes = models.IntegerField(blank=True, null=True)
+    id_se_requirement = models.AutoField(primary_key=True, verbose_name='Id')
+    service_code = models.ForeignKey(SeDict, models.DO_NOTHING, db_column='service_code', verbose_name='Serwis')
+    machine_type = models.ForeignKey('machines.MachineType', models.DO_NOTHING, db_column='machine_type', blank=True, null=True, verbose_name='Typ maszyny')
+    worker_ability = models.ForeignKey('workers.WoAbilityDict', models.DO_NOTHING, db_column='worker_ability', blank=True, null=True, related_name = '+', verbose_name='Umiejętność pracownika')
+    # TODO do ukrycia
+    qty = models.FloatField(blank=True, null=True, default=1, verbose_name='Ilość')
+    # TODO do ukrycia
+    activity_sort_order = models.IntegerField(blank=True, null=True, default=1, verbose_name='Numer porządkowy czynności')
+    activity_name = models.CharField(max_length=200, blank=True, null=True, verbose_name='Nazwa czynności')
+    time_minutes = models.IntegerField(blank=True, null=True, verbose_name='Czas trwania')
 
     class Meta:
         managed = False
         db_table = 'se_requirement'
         verbose_name = 'Wymaganie serwisu'
-        verbose_name_plural = 'Wymagania serwisow'
+        verbose_name_plural = 'Wymagania serwisów'
 
     def __str__(self):
         return str(self.id_se_requirement)
@@ -104,9 +108,9 @@ class Service(models.Model):
         managed = False
         db_table = 'service'
         verbose_name = 'Serwis'
-        verbose_name_plural = 'Lista serwisow'
-        # app_label = 'Services group'
+        verbose_name_plural = 'Lista serwisów'
 
+    # TODO poniżej test czy pobiera się czasem z unicode
     def __str__(self):
         return 'z __str__: ' + str(self.id_service)
 
@@ -115,6 +119,10 @@ class Service(models.Model):
 
 
 #nie korzystamy
+# TODO to w sumie jedna z pierwszych rzeczy do implementacji po zrobieniu podstaw
+# nie jest trudne a pokazuje pewną automtyzację czynnyości, korzystanie z triggerów
+# na sqlu - dodatkow punkty powinny za to pójść
+# tu wchodzą zarówno usunięte umyślnie przez pracowników jak te sprzed jakiegoś okresu
 class ServiceArchived(models.Model):
     id_service_archived = models.AutoField(primary_key=True)
     id_service = models.IntegerField()

@@ -163,6 +163,8 @@ CREATE INDEX client__IDXv2 ON client
   ( id_client ASC
   ) ;
 ALTER TABLE client ADD CONSTRAINT client_PK PRIMARY KEY ( id_client ) ;
+ALTER TABLE client ADD COLUMN client_user_login INTEGER;
+ALTER TABLE client ADD CONSTRAINT client_client_user_login_auth_user_FK FOREIGN KEY ( client_user_login ) REFERENCES auth_user ( id ) ;
 
 
 CREATE TABLE company_branch
@@ -614,6 +616,9 @@ CREATE INDEX worker__IDX ON worker
   ( id_worker ASC
   ) ;
 ALTER TABLE worker ADD CONSTRAINT worker_PK PRIMARY KEY ( id_worker ) ;
+ALTER TABLE worker ADD COLUMN worker_user_login INTEGER;
+ALTER TABLE worker ADD CONSTRAINT worker_worker_user_login_auth_user_FK FOREIGN KEY ( worker_user_login ) REFERENCES auth_user ( id ) ;
+
 
 
 CREATE TABLE zip_codes_dict

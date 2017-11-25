@@ -4,7 +4,9 @@
 
   <form method="post" action="{% url 'users:register' %}">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ user_form.as_p }}
+    {{ name_form.as_p }}
+    {{ address_form.as_p }}
 
     <button name="submit">Rejestruj</button>
     <input type="hidden" name="next" value="{% url 'MainPage:index' %}" />

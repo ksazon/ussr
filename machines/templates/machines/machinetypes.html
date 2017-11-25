@@ -1,4 +1,4 @@
-{% extends "firma/base.html" %}
+{% extends "machines/base.html" %}
 
 {% block content %}
 
@@ -7,12 +7,12 @@
   <ul>
     {% for machinetype in machinetypes %}
       <li>
-	 <a href="{% url 'firma:machinetype' machinetype.id %}">{{ machinetype }}</a>
+	 <a href="{% url 'machines:machinetype' machinetype.id_machine_type %}">{{ machinetype }}</a>
 	  </li>
     {% empty %}
       <li>Nie został jeszcze dodany żaden typ maszyn.</li>
     {% endfor %}
   </ul>
-  <a href="{% url 'firma:new_machinetype' %}">Dodaj nowy typ</a>
+  <a href="{% url 'machines:new_machinetype' %}">Dodaj nowy typ</a>
 
 {% endblock content %}

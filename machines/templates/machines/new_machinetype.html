@@ -1,12 +1,12 @@
-{% extends "firma/base.html" %}
+{% extends "machines/base.html" %}
 
 {% block content %}
   <p>Dodaj nowy typ maszyn:</p>
 
-  <form action="{% url 'firma:new_machinetype' %}" method='post'>
+  <form action="{% url 'machines:new_machinetype' %}" method='post'>
     {% csrf_token %}
     {{ form.as_p }}
     <button name="submit">Dodaj nowy typ</button>
   </form>
-    
+
 {% endblock content %}

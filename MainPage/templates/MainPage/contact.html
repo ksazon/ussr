@@ -27,4 +27,17 @@
   </div>
   {% endfor %}
 
+  <div id = 'contact-form-box'>
+    <form method="post" action="{% url 'MainPage:contact' %}">
+        {% csrf_token %}
+        {% for field in contact_form %}
+        <div class="form-group">
+          <h3>{{field.label}}:</h3>
+          {{field}}
+        </div>
+        {% endfor %}
+        <input type="submit" value="Wyślij" />
+    </form>
+  </div>
+
 {% endblock content %}

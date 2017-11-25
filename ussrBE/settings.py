@@ -92,8 +92,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ussr',
         'USER': 'ks',
-        #'PASSWORD': os.environ.get('AWS_DB_PASS'),
-	'PASSWORD': 'procesory',
+        'PASSWORD': os.environ.get('AWS_DB_PASS'),
         'HOST': 'ussr.ckcaelqjxpvo.eu-west-1.rds.amazonaws.com',
     }
 }
@@ -155,3 +154,12 @@ GRAPPELLI_ADMIN_TITLE = "USSR"
 LOGIN_URL = '/users/login'
 
 LOGOUT_REDIRECT_URL = '/'
+
+
+
+# Email
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ.get('GMAIL_ADDRESS')
+EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True

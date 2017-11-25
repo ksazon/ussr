@@ -3,7 +3,7 @@ from .models import *
 
 
 # Register your models here.
-admin.site.register(TimeSlotParams)
+# admin.site.register(TimeSlotParams)
 admin.site.register(SexDict)
 admin.site.register(ResourcesUsage)
 admin.site.register(ResourcesUsageParams)

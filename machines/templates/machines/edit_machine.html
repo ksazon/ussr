@@ -1,12 +1,12 @@
-{% extends "firma/base.html" %}
+{% extends "machines/base.html" %}
 
 {% block content %}
 
-  <p><a href="{% url 'firma:machinetype' machinetype.id %}">{{ machinetype }}</a></p>
-    
+  <p><a href="{% url 'machines:machinetype' machinetype.id_machine_type %}">{{ machinetype }}</a></p>
+
   <p>Edycja wpisu:</p>
-    
-  <form action="{% url 'firma:edit_machine' machine.id %}" method='post'>
+
+  <form action="{% url 'machines:edit_machine' machine.id_machine %}" method='post'>
     {% csrf_token %}
     {{ form.as_p }}
     <button name="submit">Zapisz zmiany</button>

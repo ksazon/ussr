@@ -5,7 +5,7 @@ from .models import MachineType, Machine
 class MachineTypeForm(forms.ModelForm):
     class Meta:
         model = MachineType
-        fields = ['machine_type_name']
+        fields = ['id_machine_type', 'machine_type_name']
         #labels = {'text': ''}
 
 class MachineForm(forms.ModelForm):
