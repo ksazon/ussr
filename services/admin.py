@@ -3,6 +3,7 @@ from .models import *
 
 # Register your models here.
 
+
 admin.site.register(SeDict)
 admin.site.register(SeDiscount)
 admin.site.register(SeRequirement)

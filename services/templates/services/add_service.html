@@ -1,0 +1,12 @@
+{% extends "MainPage/base.html" %}
+
+{% block content %}
+
+  <p>Dodaj nową usługę:</p>
+  <form method='post'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name='submit'>Dodaj usługę</button>
+  </form>
+
+{% endblock content %}
