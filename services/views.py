@@ -5,7 +5,13 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from .models import *
 
-def services(request):
-    services = SeDict.objects.all()
-    context = {'services': services}
+def service(request, segroupdict_id):
+    service = SeDict.objects.filter(se_group=segroupdict_id)
+    context = {'services': service}
     return render(request, 'services/services.html', context)
+
+
+def services(request):
+    services = SeGroupDict.objects.all()
+    context = {'services': services}
+    return render(request, 'services/categories.html', context)

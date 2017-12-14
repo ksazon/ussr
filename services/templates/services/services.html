@@ -7,10 +7,10 @@
   <ul>
     {% for service in services %}
       <li>
-   {{service.se_dict_name}}
-	  </li>
+        {{service.se_dict_name}}
+	    </li>
     {% empty %}
-      <li>Wystąpił błąd, przepraszamy.</li>
+      <li>Niestety oferty w wybranej kategorii aktualnie są niedostępne.</li>
     {% endfor %}
   </ul>
   {% endblock content %}
