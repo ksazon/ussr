@@ -1,11 +1,67 @@
+{% extends "MainPage/base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+
 {% if not_registered_client_in_client_tab %}
 <p> Nie jesteś zarejestrowany w tabeli Klienci</p>
-
 {% else %}
+
+{% if success %}
+<script type="text/javascript">
+  $(window).on('load',function(){
+      $('#success-modal').modal('show');
+  });
+</script>
+{% endif %}
+
+
+<div id = "edit-client-data">
+  <div>
+    <div id = "edit-client-information-text">Zmień swoje dane</div>
+  </div>
   <form method="post" action="{% url 'clients:personal_informations' %}">
       {% csrf_token %}
-      {{ name_form.as_p }}
-      {{ address_form.as_p }}
-      <input type="submit" value="Submit" />
+      <div class = "form-row">
+        {% bootstrap_field name_form.first_name form_group_class="form-group col-md-4" %}
+        {% bootstrap_field name_form.last_name form_group_class='form-group col-md-6' %}
+        {% bootstrap_field name_form.sex form_group_class="form-group col-md-2" %}
+      </div>
+      <div class = "form-row">
+        {% bootstrap_field address_form.email form_group_class="form-group col-md-12" %}
+      </div>
+      <div class = "form-row">
+        {% bootstrap_field address_form.phone form_group_class="form-group col-md-12" %}
+      </div>
+      <div class = "form-row">
+        {% bootstrap_field address_form.street form_group_class="form-group col-md-6" label_class="street-label" %}
+        {% bootstrap_field address_form.house_no form_group_class="form-group col-md-3" label_class="house-no-label" %}
+        {% bootstrap_field address_form.apartment_no form_group_class="form-group col-md-3" %}
+      </div>
+      <div class = "form-row">
+        {% bootstrap_field address_form.city form_group_class="form-group col-md-8" %}
+        {% bootstrap_field address_form.zip form_group_class="form-group col-md-4" %}
+      </div>
+      <input type="submit" value="Zatwierdź" class="btn btn-primary"/>
   </form>
+</div>
 {% endif %}
+
+<div class="modal fade" id="success-modal" tabindex="-2" role="dialog" aria-labelledby="edit-client" aria-hidden="true" data-backdrop="false" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Edit-Title">Sukces</h5>
+        </button>
+      </div>
+      <div class="modal-body" id = "success-modal-box">
+        <p>Zmiana danych zakończona powodzeniem</p>
+        <button class="btn btn-primary" onclick="window.location.href='/'">OK</button>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

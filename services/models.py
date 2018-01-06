@@ -8,12 +8,11 @@ from django.db import models
 class SeDict(models.Model):
     id_se_dict = models.CharField(primary_key=True, max_length=10, verbose_name='Id')
     se_dict_name = models.CharField(unique=True, max_length=200, verbose_name='Nazwa')
-    se_group = models.ForeignKey('SeGroupDict', blank=True, null=True, db_column='se_group', verbose_name='Grupa serwisów')
+    se_group = models.ForeignKey('SeGroupDict', blank=True, null=True, db_column='se_group', verbose_name='Grupa serwisów', related_name = 'services_in_group')
     base_price = models.DecimalField(blank=True, null=True, decimal_places=2, max_digits=8, verbose_name='Cena bazowa')
     location_type = models.ForeignKey('company.LocationType', models.DO_NOTHING, db_column='location_type', blank=True, null=True, verbose_name='Wymagany typ lokacji')
     # TODO do ukrycia
     avg_time = models.IntegerField(blank=True, null=True, verbose_name='Przeciętny czas wykonania')
-    # TODO do ukrycia
     continous = models.BooleanField(default=True, verbose_name='Czy musi być wykonywane bez przerw')
     notes = models.CharField(max_length=400, blank=True, null=True, verbose_name='Uwagi')
 
@@ -82,42 +81,42 @@ class SeRequirement(models.Model):
 class Service(models.Model):
     id_service = models.AutoField(primary_key=True, editable=False, verbose_name='Id')
     is_confirmed = models.NullBooleanField(default=False, verbose_name='Powierdzony')
-    service_code = models.ForeignKey(SeDict, models.DO_NOTHING, db_column='service_code', verbose_name='Typ uslugi')
+    service_code = models.ForeignKey(SeDict, models.DO_NOTHING, db_column='service_code', verbose_name='Typ usługi')
     client = models.ForeignKey('clients.Client', models.DO_NOTHING, db_column='client', verbose_name='Klient')
     # TODO do ukrycia
     location = models.ForeignKey('company.Location', models.DO_NOTHING, db_column='location', blank=True, null=True, verbose_name='Lokacja')
-    create_invoice = models.NullBooleanField(default=False, verbose_name='Utworzyc fakture VAT')
+    create_invoice = models.NullBooleanField(default=False, verbose_name='Utworzyć fakturę VAT')
     # TODO do ukrycia
-    service_discount_amount = models.DecimalField(blank=True, null=True, decimal_places=2, max_digits=10, verbose_name='Kwota znizki')
+    service_discount_amount = models.DecimalField(blank=True, null=True, decimal_places=2, max_digits=10, verbose_name='Kwota zniżki')
     # TODO do ukrycia
-    service_discount_percent = models.FloatField(blank=True, null=True, verbose_name='Procent znizki')
+    service_discount_percent = models.FloatField(blank=True, null=True, verbose_name='Procent zniżki')
     min_start_datetime = models.DateTimeField(blank=True, null=True, verbose_name='Szukanie czasu od')
-    planned_start = models.DateTimeField(blank=True, null=True, verbose_name='Planowany poczatek')
-    planned_end = models.DateTimeField(blank=True, null=True, verbose_name='Planowane zakonczenie')
+    planned_start = models.DateTimeField(blank=True, null=True, verbose_name='Planowany początek')
+    planned_end = models.DateTimeField(blank=True, null=True, verbose_name='Planowane zakończenie')
     # TODO do ukrycia
-    real_start = models.DateTimeField(blank=True, null=True, verbose_name='Rzeczywisty poczatek')
+    real_start = models.DateTimeField(blank=True, null=True, verbose_name='Rzeczywisty początek')
     # TODO do ukrycia
-    real_end = models.DateTimeField(blank=True, null=True, verbose_name='Rzeczywiste zakonczenie')
+    real_end = models.DateTimeField(blank=True, null=True, verbose_name='Rzeczywiste zakończenie')
     # TODO do ukrycia
-    reminder_sms_minutes = models.IntegerField(blank=True, null=True, default=-1, verbose_name='Ilosc minut miedzy SMS a rozpoczeciem')
+    reminder_sms_minutes = models.IntegerField(blank=True, null=True, default=-1, verbose_name='Ilość minut między SMS a rozpoczęciem')
     # TODO do ukrycia
-    reminder_email_minutes = models.IntegerField(blank=True, null=True, default=-1, verbose_name='Ilosc minut miedzy e-mail a rozpoczeciem')
+    reminder_email_minutes = models.IntegerField(blank=True, null=True, default=-1, verbose_name='Ilość minut między e-mail a rozpoczęciem')
     # TODO do ukrycia
-    finished_info_sms = models.NullBooleanField(default=True, verbose_name='SMS o ukonczeniu')
+    finished_info_sms = models.NullBooleanField(default=True, verbose_name='SMS o ukończeniu')
     # TODO do ukrycia
     # test wykomnetowania pola
-    finished_info_email = models.NullBooleanField(default=True, verbose_name='E-mail o ukonczeniu')
+    finished_info_email = models.NullBooleanField(default=True, verbose_name='E-mail o ukończeniu')
     notes = models.CharField(max_length=400, blank=True, null=True, verbose_name='Uwagi')
     # TODO do ukrycia ??
     created_datetime = models.DateTimeField(blank=True, null=True, verbose_name='Data utworzenia')
     # TODO do ukrycia
     created_by = models.CharField(max_length=10, blank=True, null=True, verbose_name='Utworzone przez')
     # TODO do ukrycia
-    confirmed_datetime = models.DateTimeField(blank=True, null=True, verbose_name='Potwierdzony poczatek uslugi')
+    confirmed_datetime = models.DateTimeField(blank=True, null=True, verbose_name='Potwierdzony początek usługi')
     # TODO do ukrycia
     confirmed_by = models.CharField(max_length=10, blank=True, null=True, verbose_name='Potwierdone przez')
     # TODO do ukrycia
-    company_branch = models.ForeignKey('company.CompanyBranch', models.DO_NOTHING, db_column='company_branch', default='main', verbose_name='Oddzial', related_name = '+')
+    company_branch = models.ForeignKey('company.CompanyBranch', models.DO_NOTHING, db_column='company_branch', default='main', verbose_name='Oddział', related_name = '+')
 
     class Meta:
         managed = False
@@ -177,7 +176,7 @@ class ServiceArchived(models.Model):
         managed = False
         db_table = 'service_archived'
         verbose_name = 'Serwis archiwalny'
-        verbose_name_plural = 'Archiwum serwisow'
+        verbose_name_plural = 'Archiwum serwisów'
 
     def __str__(self):
         return str(self.id_service_archived)

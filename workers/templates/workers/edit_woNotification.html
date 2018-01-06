@@ -1,0 +1,25 @@
+{% extends "workers/base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+  <p><a href="{% url 'workers:woNotification' woNotification.id_wo_notification %}"><button type="button" class="btn btn-primary">{{ woNotification }}</button></a></p>
+
+  <p>Edycja wpisu:</p>
+
+  <form action="{% url 'workers:edit_woNotification' woNotification.id_wo_notification %}" method='post' class="form-horizontal">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            <label class="col-sm-3" control-label>{{ field.label_tag }}</label> {{ field }}
+          </div>
+    {% endfor %}
+    {% buttons %}
+      <button name="submit" class="btn btn-primary">Zapisz zmiany</button>
+    {% endbuttons %}
+
+
+  </form>
+
+{% endblock content %}

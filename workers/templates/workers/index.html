@@ -2,18 +2,57 @@
 
 {% block content %}
 
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "workers/style.css" %}" />
+<script src="{% static "workers/scripts/calendar.js" %}"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/locale/pl.js"></script>
+<script type="text/javascript" src='{% static 'services/scripts/ajax_setup.js' %}'></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" />
+<link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.print.css" />
 
+<script type="text/javascript">
+var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+</script>
 
-<p> Jesteś poprwanie zalogowanym pracownikiem </p>
-<div id = "navigation-panel">
-  <div class = "worker-navigation-element">
-    <a class = "worker-navigation-link" href="{% url 'workers:personal_informations' %}"> Zmień swoje dane </a>
+<!-- <p> Jesteś poprwanie zalogowanym pracownikiem </p> -->
+<div id = "worker-panel-grid">
+  <div id = "navigation-panel">
+
+    <div class = "worker-navigation-element">
+      <a class = "worker-navigation-link" href="/services/worker_services/?start_timestamp={{date}}">Szczegóły rezerwacji</a>
+    </div>
+
+    <div class = "worker-navigation-element">
+      <a class = "worker-navigation-link" href="{% url 'workers:personal_informations' %}">Zmień swoje dane</a>
+    </div>
+
+    <div class = "worker-navigation-element">
+      <a class = "worker-navigation-link" href="{% url 'workers:client_list' %})">Klienci</a>
+    </div>
+    <div class = "worker-navigation-element">
+      <a class = "worker-navigation-link" href="{% url 'workers:woNotifications' %})">Notatki</a>
+    </div>
+    <div class = "worker-navigation-element">
+      <a class = "worker-navigation-link" href="{% url 'machines:machinetypes' %})">Maszyny</a>
+    </div>
+    <div class = "worker-navigation-element">
+      <a class = "worker-navigation-link" href="{% url 'workers:wRaports' %})">Raporty</a>
+    </div>
   </div>
+  <div id = "worker-calendar">
 
-  <div class = "worker-navigation-element">
-    <a class = "worker-navigation-link" href="{% url 'workers:client_list' %})"> Klienci </a>
+
+
+    <form id = "format-form" method="get" action = "{% url 'services:generate_weekly_report' %}">
+      {{report_form}}
+      <input type = "submit" value = "Pobierz">
+    </form>
   </div>
 </div>
+
 
 {% endblock content %}

@@ -20,3 +20,40 @@
   border: 1px solid #ccc;
   background-color: white;
 }
+
+#calendar{
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.select-service{
+  margin-left: 40%;
+  width: 300px;
+}
+
+.disactive-select-service{
+  display: none;
+}
+
+.active-select-service{
+  display: block;
+}
+
+#select-service-group-box{
+  text-align: center;
+}
+#select-service-group-box h3{
+  text-align: center;
+}
+
+#select-service-box{
+  text-align: center;
+}
+
+#select-service-message{
+  display:none;
+}
+
+#select-service-message h3{
+  text-align: center;
+}

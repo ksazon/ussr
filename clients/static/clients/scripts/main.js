@@ -1,22 +1,10 @@
-function OnOffEditClientForm()
-{
-  if (document.getElementById('edit-client-box').style.display == "block") {
-      document.getElementById('edit-client-box').style.display = "none";
-      $( '#client-edit-form').remove();
-  }
-  else {
-    document.getElementById('edit-client-box').style.display = "block";
-  }
+function OnOffEditClientForm(){
+      $( '#edit-client-form-box').empty();
+      $('#editmodal').modal('hide');
 }
 
-function OnOffEmailForm()
-{
-  if (document.getElementById('email-box').style.display == "block") {
-      document.getElementById('email-box').style.display = "none";
-  }
-  else {
-    document.getElementById('email-box').style.display = "block";
-  }
+function OffEmailForm(){
+  $('#email-modal').modal('hide');
 }
 
 
@@ -25,37 +13,19 @@ $(document).ready(function() {
 
   $( '#client-form' ).submit(function( event ){
       event.preventDefault();
-      console.log("form submitted!");
-      document.getElementById('client-form').style.color = "blue";
       create_client();
   });
 
   $( document ).on('click', '#client-edit-button', function( event ){
       event.preventDefault();
-      console.log("edit form submitted!");
-      console.log($("#client-edit-form").serialize());
-      console.log($('#client-edit-button').val());
       edit_client($('#client-edit-button').val());
   });
 
+  $( '.client-reservation-button' ).click(function( event ){
+      event.preventDefault();
+      location.href = "/services/worker_reservation/" + this.value;
+  });
 
-  function edit_client(id) {
-    console.log("edit post is working!") // sanity check
-    console.log($("#client-edit-form").serialize());
-    console.log(id)
-    $.ajax({
-        url : "/clients/edit_client/", // the endpoint
-        type : "POST", // http method
-        data : $('#client-edit-form').serialize() + "&id=" + id,
-
-        // handle a successful response
-        success : function(response) {
-            $('#body').html(response);
-            console.log("success"); // another sanity check
-        },
-
-    });
-  }
 
   function csrfSafeMethod(method) {
       // these HTTP methods do not require CSRF protection
@@ -71,23 +41,7 @@ $(document).ready(function() {
   });
 
 
-function create_client() {
-    console.log("create post is working!") // sanity check
-    console.log($("#client-form").serialize());
-    $.ajax({
-        url : "/clients/create_client/", // the endpoint
-        type : "POST", // http method
-        data : $('#client-form').serialize(), // data sent with the post request
 
-        // handle a successful response
-        success : function(response) {
-            $('#client-form').trigger("reset");
-            $('#body').html(response);
-            console.log("success"); // another sanity check
-        },
-
-    });
-};
 
 $( '#client-table-form' ).submit(function( event ){
     event.preventDefault();
@@ -113,6 +67,37 @@ $( '.email-button' ).click(function( event ){
 
 });
 
+
+
+});
+
+
+function tableLoadHandlers(){
+
+  $( '.edit-button' ).click(function( event ){
+      event.preventDefault();
+      console.log($(this).val());
+      edit_client_form_genertion($(this));
+  });
+
+  $( '.email-button' ).click(function( event ){
+      event.preventDefault();
+      let id = $(this).val();
+      email_check(id);
+      $( '#email-form' ).submit(function( event ){
+        event.preventDefault();
+        send_mail(id)
+        $( '#email-form' ).off("submit");
+      });
+  });
+
+  $( '.client-reservation-button' ).click(function( event ){
+      event.preventDefault();
+      location.href = "/services/worker_reservation/" + this.value;
+  });
+
+}
+
 function email_check(id) {
     $.ajax({
       url : "/clients/email_check/", // the endpoint
@@ -121,7 +106,7 @@ function email_check(id) {
       success : function(response) {
           console.log(response.email);
           if ( response.email == true ){
-            OnOffEmailForm();
+            $('#email-modal').modal('show');
           }
           else{
             alert("Klient nie podal adresu e-mail!");
@@ -139,8 +124,7 @@ function send_mail(id) {
     success : function(response) {
         console.log(response);
         $('#email-form').trigger("reset");
-        OnOffEmailForm();
-
+        OffEmailForm();
     },
 });
 };
@@ -156,7 +140,7 @@ function delete_client() {
         // handle a successful response
         success : function(response) {
             $('#client-form').trigger("reset");
-            $('#body').html(response);
+            get_client_table();
             console.log("success"); // another sanity check
         },
 
@@ -176,10 +160,73 @@ function edit_client_form_genertion(id) {
         success : function(response) {
             $('#edit-client-form-box').append(response);
             console.log(response); // another sanity check
-            OnOffEditClientForm();
         },
 
     });
 };
 
-});
+function create_client() {
+    console.log("create post is working!") // sanity check
+    console.log($("#client-form").serialize());
+    $.ajax({
+        url : "/clients/create_client/", // the endpoint
+        type : "POST", // http method
+        data : $('#client-form').serialize(), // data sent with the post request
+
+        // handle a successful response
+        success : function(response) {
+            $('#client-form').trigger("reset");
+            $('#new-client-box').empty();
+            $('#new-client-box').html(response);
+
+            $( '#client-form' ).submit(function( event ){
+                event.preventDefault();
+                create_client();
+            });
+
+            tableLoadHandlers();
+            console.log("success"); // another sanity check
+            get_client_table();
+        },
+
+    });
+};
+
+
+  function edit_client(id) {
+    console.log("edit post is working!") // sanity check
+    console.log($("#client-edit-form").serialize());
+    console.log(id)
+    $.ajax({
+        url : "/clients/edit_client/", // the endpoint
+        type : "POST", // http method
+        data : $('#client-edit-form').serialize() + "&id=" + id,
+
+        // handle a successful response
+        success : function(response) {
+            $('#edit-client-form-box').empty();
+            $('#edit-client-form-box').html(response);
+            console.log("success"); // another sanity check
+            OnOffEditClientForm();
+            get_client_table();
+        },
+
+    });
+  }
+
+  function get_client_table() {
+    $.ajax({
+        url : "/clients/get_client_table/", // the endpoint
+        type : "GET", // http method
+        data : $('#filter-form').serialize(),
+
+        // handle a successful response
+        success : function(response) {
+            $('#table-box').empty();
+            $('#table-box').html(response);
+            tableLoadHandlers();
+            console.log("success"); // another sanity check
+        },
+
+    });
+  }

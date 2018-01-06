@@ -146,8 +146,8 @@ class WoGroupPrivilege(models.Model):
 # po jakiś eventach
 class WoNotification(models.Model):
     id_wo_notification = models.AutoField(primary_key=True, verbose_name='Id')
-    worker = models.ForeignKey('Worker', models.DO_NOTHING, db_column='worker', verbose_name='Pracownik')
-    worker_group = models.ForeignKey(WoGroupDict, models.DO_NOTHING, db_column='worker_group', verbose_name='Grupa pracowników')
+    worker = models.ForeignKey('Worker', models.DO_NOTHING, blank=True, null=True, db_column='worker', verbose_name='Pracownik')
+    worker_group = models.ForeignKey(WoGroupDict, models.DO_NOTHING, blank=True, null=True, db_column='worker_group', verbose_name='Grupa pracowników')
     notification_subject = models.CharField(max_length=200, blank=True, null=True, verbose_name='Temat przypomnienia')
     notification_text = models.CharField(max_length=400, blank=True, null=True, verbose_name='Tekst przypomnienia')
     severity = models.IntegerField(blank=True, null=True, verbose_name='Ważność')
@@ -217,7 +217,12 @@ class Worker(models.Model):
     address = models.ForeignKey('utilities.Address', models.DO_NOTHING, db_column='address', blank=True, null=True, verbose_name='Adres')
     notes = models.CharField(max_length=400, blank=True, null=True, verbose_name='Uwagi')
     company_branch = models.ForeignKey('company.CompanyBranch', models.DO_NOTHING, db_column='company_branch', default='main', verbose_name='Oddział')
-    user_login = models.OneToOneField('auth.User', models.DO_NOTHING, db_column = 'worker_user_login', blank=True, null=True, verbose_name='Login')
+    user_login = models.OneToOneField('auth.User', models.DO_NOTHING, db_column = 'worker_user_login', blank=True, null=True, verbose_name='Login', unique = True)
+
+
+    def get_employee_name(self):
+        name = self.first_name + ' ' + self.last_name
+        return name
 
     class Meta:
         managed = False

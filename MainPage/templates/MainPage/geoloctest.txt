@@ -1,0 +1,42 @@
+<script>
+window.onload = findClosest(); //podmina na getLocation
+var c_b = document.getElementById("closest-branch");
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        cb.innerHTML = "Włącz geolokację w celu podpowiedzi najbliższej placówki";
+    }
+}
+function showPosition(position) {
+	//findClosest(positon)
+	x.innerHTML = "Twoja dl: " + position.coords.latitude + " szer: " + position.coords.longitude;
+}
+
+function findClosest() {
+	var branchesList = "{{ branch_id_list|safe }}";
+	console.log(branchesList);
+	var closestBranch = "";
+	var closestBranchDistance = -1.0;
+	var tempDistance = 0;
+	//{% for branch in branches_list %}
+	for (branch in branchesList) {
+		tempDistance = Math.sqrt(Math.pow(50 - {{ branch.latitude }}, 2) + Math.pow(30 - {{ branch.longitude }}, 2));
+		if (closestBranchDistance > tempDistance || closestBranchDistance == -1) {
+			closestBranch = "{{ branch.id_company_branch }}";
+			closetBranchDistance = tempDistance;
+		}
+	}
+//	{% endfor %}
+	{% for branch in branches_list %}
+	{% if branch.id_company_branch == closestBranch %}
+	console.log('elo')
+	{% endif %}
+	{% endfor %}
+	console.log(closestBranchDistance);
+}
+		
+</script>
+
+<div id='closest-branch'></div>
+

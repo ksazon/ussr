@@ -1,0 +1,28 @@
+{% extends "workers/base.html" %}
+
+{% block content %}
+<a href="{% url 'workers:wRaports' %}"><button type="button" class="btn btn-primary">Raporty</button></a>
+<a href="{% url 'workers:wRaport1' %}"><button type="button" class="btn btn-primary">Wszystkie Maszyny</button></a>
+<a href="{% url 'workers:wRaport2' %}"><button type="button" class="btn btn-primary">Sprawne Maszyny</button></a>
+<br><br>
+<table class="table">
+<thead class="thead-dark" align="center">
+<tr>
+<th scope="col">Imię</th>
+<th scope="col">Nazwisko</th>
+<th scope="col">Stanowisko</th>
+</tr>
+</thead>
+<tbody align="center">
+{% for worker in workers %}
+
+<tr>
+  <td>{{ worker.first_name }}</td>
+  <td>{{ worker.last_name }}</td>
+  <td>{{ worker.worker_title }}</td>
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock content %}

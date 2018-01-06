@@ -1,17 +1,16 @@
 {% extends "workers/base.html" %}
 
-
+{% load bootstrap4 %}
 {% load staticfiles %}
 {% load render_table from django_tables2 %}
 {% block content %}
 
 <!doctype html>
 <head>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="{% static "clients/scripts/script.js" %}"></script>
   <script src="{% static "clients/scripts/main.js" %}"></script>
+  <script src="{% static "clients/scripts/report.js" %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static "clients/style.css" %}" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 
 
   {% csrf_token %}
@@ -21,52 +20,84 @@
 </head>
 
 <body id = "body">
-
-  <div id = "table-box">
-    <button onclick="OnOffClientForm()">Dodaj klienta</button>
-    <form id = "client-table-form">
-      {% csrf_token %}
-      {% render_table client_table %}
-      <input type = "submit" value = "Usuń">
-    </form>
-  </div>
-
-  <div id = "edit-client-box">
-    <div id = "edit-client-form-box">
-      <p> Edytujesz klienta</p>
-      <button onclick="OnOffEditClientForm()">Zakończ</button>
-    </div>
-  </div>
-
-  <div id = "new-client-box">
-    <div id = "client-form-box">
-      <button onclick="OnOffClientForm()">Zamknij</button>
-      <form  id="client-form">
-        {% csrf_token %}
-        {{ name_form.as_p }}
-        {{ address_form.as_p }}
-        <input type="submit">
-      </form>
-    </div>
-  </div>
-
-<div id = "email-box">
-  <div id = "email-form-box">
-    <p>Wyślij maila</p>
-    <button onclick="OnOffEmailForm()">Zamknij</button>
-    <form id = "email-form">
-      {% csrf_token %}
-      {% for field in email_form %}
-      <div class="form-group">
-        <p>{{field.label}}:</p>
-        {{field}}
-      </div>
-      {% endfor %}
-      <input type="submit">
-    </form>
-  </div>
+  {% include "clients/client_table_filter.html" %}
+<div>
+  <button type="button" data-toggle="modal" data-target="#newmodal">Dodaj klienta</button>
+  {% for field in format_form%}
+  <form id = "format-form">Wybierz format raportu: {{field}}<button type="button" onclick="get_report(old_form_data);">Pobierz raport</button></form>
+  {% endfor %}
 </div>
 
-</body id = "body">
+
+  <div id = "table-box">
+    {% include "clients/client_table.html" %}
+  </div>
+
+  <div class="modal fade" id="newmodal" tabindex="-1" role="dialog" aria-labelledby="new-client" aria-hidden="true" data-backdrop="false" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="New-Title">Dodajesz klienta</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id = "new-client-box">
+        {% include "clients/new_client_form.html" %}
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal fade" id="editmodal" tabindex="-2" role="dialog" aria-labelledby="edit-client" aria-hidden="true" data-backdrop="false" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="Edit-Title">Edytujesz klienta</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="OnOffEditClientForm()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id = "edit-client-form-box">
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="email-modal" tabindex="-2" role="dialog" aria-labelledby="send-email-form" aria-hidden="true" data-backdrop="false" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="email-form-title">Wyślij maila</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="OffEmailForm();">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id = "email-form-box">
+          <form id = "email-form">
+            {% csrf_token %}
+            {% for field in email_form %}
+            <div class="form-group">
+              {% bootstrap_field field form_group_class="form-group col-md-12" %}
+            </div>
+            {% endfor %}
+            <input type="submit" class="btn btn-primary" value = "Wyślij">
+          </form>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
 
 {% endblock content %}

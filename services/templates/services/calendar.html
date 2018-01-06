@@ -1,0 +1,92 @@
+
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% bootstrap_javascript %}
+
+<!doctype html>
+
+<head>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/locale/pl.js"></script>
+  <script type="text/javascript" src='{% static 'services/scripts/main.js' %}'></script>
+  <script type="text/javascript" src='{% static 'services/scripts/getcalendar.js' %}'></script>
+  <script type="text/javascript" src='{% static 'services/scripts/ajax_setup.js' %}'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" />
+  <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.print.css" />
+
+  {% csrf_token %}
+  <script type="text/javascript">
+  var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+  </script>
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+
+    $("#calendar").fullCalendar({
+      height: 700,
+      handleWindowResize : true,
+      locale:'pl',
+  		defaultView: 'agendaWeek',
+      hiddenDays: [ 0 ],
+
+  		views:{
+  		agenda:{
+  	 	    allDaySlot: false,
+  				minTime: "{{workday_start|date:"H:i:s"}}",
+  		    maxTime: "{{workday_end|date:"H:i:s"}}",
+  		    slotDuration: "00:15:00"
+  			}
+  		},
+
+      validRange: {
+          start: '{{display_start|date:"Y-m-d"}}',
+          end: '{{display_end|date:"Y-m-d"}}',
+      },
+
+    eventSources: [
+    {
+      events: [
+        {% for n in result %}
+        {
+          start: '{{n.from_time|date:"Y-m-d H:i:s"}}',
+          end: '{{n.to_time|date:"Y-m-d H:i:s"}}',
+        },
+        {% endfor %}
+        ],
+    }
+  ],
+
+  eventClick: function(event) {
+    if (event.start) {
+      let date = event.start;
+      let service = '{{service.id_se_dict}}';
+      let service_name = '{{service.se_dict_name}}';
+      let text = ("Czy chcesz zarezerwowac usługę " + service_name + " dnia " + date.format("D-M-Y") + " o godzinie " + date.format("H:mm?"));
+      $('#reservation-confirm-modal').modal('show');
+      $('#reservation-confirm-box').html('<div id = "reservation-text-box"><p id = "reservation-confirm-text">' + text + '</p><div><button id = "reservation-confirm-yes-button" class="btn btn-success">Tak</button><button id = "reservation-confirm-no-button" class="btn btn-danger">Nie</button></div></div>');
+
+      $('#reservation-confirm-no-button').click(function(e){
+        e.preventDefault();
+        $('#reservation-confirm-modal').modal('hide');
+        $('#reservation-text-box').remove();
+      });
+
+      $('#reservation-confirm-yes-button').click(function(e){
+        e.preventDefault();
+        $('#service').val(service);
+        $('#date').val(date.format("Y-M-D HH:mm"));
+        $('#reservation-form').submit();
+      });
+    }
+  }
+
+
+
+  });
+});
+
+</script>
+<div id = 'calendar'>
+</div>

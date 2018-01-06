@@ -1,0 +1,7 @@
+{% load render_table from django_tables2 %}
+
+  <form id = "client-table-form">
+    {% csrf_token %}
+    {% render_table client_table %}
+    <input type = "submit" value = "Usuń">
+  </form>

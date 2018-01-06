@@ -6,6 +6,7 @@ from django.forms.widgets import HiddenInput
 
 
 class ClientAddressForm(ModelForm):
+    email = forms.EmailField(required = False)
     class Meta:
         model = Address
         fields = [ 'email', 'phone', 'street', 'house_no', 'apartment_no', 'city', 'zip' ]
@@ -18,4 +19,4 @@ class ClientPersonalInformationsForm(ModelForm):
 
 class EmailForm(forms.Form):
     subject = forms.CharField(max_length=100, label='Temat')
-    message = forms.CharField(widget=forms.Textarea, label='Wiadomośc')
+    message = forms.CharField(widget=forms.Textarea, label='Wiadomość')

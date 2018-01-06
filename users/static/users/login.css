@@ -1,0 +1,44 @@
+#login-grid{
+  display: grid;
+  grid-template-columns: 46% 46%;
+  margin-left: 10%;
+  margin-right: 10%;
+  grid-column-gap: 8%;
+}
+
+#login-text{
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 10vh;
+}
+
+#login-box{
+  margin-top: 20vh;
+  height: 53vh;
+  margin-bottom: 20vh;
+}
+
+#registration-button{
+  font-size: 25px;
+  height: 3.5vw;
+  width: 100%;
+}
+
+#registration-button-box{
+  width: 80%;
+  margin-left: 10%;
+}
+
+#registration-text{
+  margin-top: 20vh;
+  text-align: center;
+  margin-bottom: 10vh;
+}
+
+#registration-text p:nth-child(odd) {
+    font-size: 40px;
+}
+
+#registration-text p:nth-child(even) {
+  font-size: 50px;
+}

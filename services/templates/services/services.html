@@ -2,15 +2,40 @@
 
 {% block content %}
 {% load static %}
-  <p>Usługi:</p>
+  <h1>Nasze usługi:</h1>
 
+<h2>Warsztat Samochodowy:</h2>
   <ul>
-    {% for service in services %}
+    {% for segrupee in segrupees %}
       <li>
-        {{service.se_dict_name}}
-	    </li>
+   {{segrupee.se_dict_name}}
+    </li>
     {% empty %}
       <li>Niestety oferty w wybranej kategorii aktualnie są niedostępne.</li>
     {% endfor %}
   </ul>
+
+  <h2>Usługi dla zwierząt:</h2>
+    <ul>
+      {% for segrupe in segrupes %}
+        <li>
+     {{segrupe.se_dict_name}}
+      </li>
+      {% empty %}
+        <li>Wystąpił błąd, przepraszamy.</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Usługi inne:</h2>
+      <ul>
+        {% for segrupeee in segrupeees %}
+          <li>
+       {{segrupeee.se_dict_name}}
+        </li>
+        {% empty %}
+          <li>Wystąpił błąd, przepraszamy.</li>
+        {% endfor %}
+      </ul>
+
+
   {% endblock content %}

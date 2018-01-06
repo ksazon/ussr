@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0',
                 '127.0.0.1',
+                'localhost',
                  'ussr-ug.herokuapp.com']
 
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'django.contrib.gis',
     'company',
     'MainPage',
     'machines',
@@ -52,6 +54,9 @@ INSTALLED_APPS = [
     'services',
     'users.apps.UsersConfig',
     'django_tables2',
+    #aplikacje innych firm
+    'bootstrap4',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +169,9 @@ EMAIL_HOST_USER = os.environ.get('GMAIL_ADDRESS')
 EMAIL_HOST_PASSWORD = os.environ.get('GMAIL_PASS')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# Settings for django-bootstrap4
+BOOTSTRAP4 = {
+    'jquery_url': 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
+    'include_jquery': True,
+    }

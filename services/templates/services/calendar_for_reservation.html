@@ -1,0 +1,86 @@
+{% extends "MainPage/base.html" %}
+
+{% block content %}
+{% load staticfiles %}
+
+
+<!doctype html>
+
+<head>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/locale/pl.js"></script>
+  <script type="text/javascript" src='{% static 'services/scripts/main.js' %}'></script>
+  <script type="text/javascript" src='{% static 'services/scripts/getcalendar.js' %}'></script>
+  <script type="text/javascript" src='{% static 'services/scripts/ajax_setup.js' %}'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" />
+  <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.print.css" />
+  <link rel="stylesheet" href="{% static 'services/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'services/calendar_site.css' %}" />
+
+  {% csrf_token %}
+  <script type="text/javascript">
+  var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+  </script>
+
+
+</head>
+<body>
+  <div id = "whole-page">
+
+    <div id = "select-service-group-box">
+      <h3>Wybierz grupę usług</h3>
+      <select id = "select-service-group">
+        <option value="" selected disabled hidden>Wybierz grupę usług</option>
+        {% for group in services_groups %}
+        <option value="{{group.id_se_group_dict}}">{{group.se_group_dict_name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div id = "select-service-message">
+      <h3>Wybierz usługę</h3>
+    </div>
+
+  <div id = "select-service-box">
+  {% for group in services_groups %}
+      <select id = "{{group.id_se_group_dict}}"  class = "select-service disactive-select-service">
+        <option value="" selected disabled hidden>Wybierz usługę</option>
+        {% for service in group.services_in_group.all %}
+        <option value="{{service.id_se_dict}}">{{service.se_dict_name}}</option>
+        {% endfor %}
+      </select>
+  {% endfor %}
+  </div>
+
+
+    <div id = 'calendar-box'>
+    </div>
+
+
+  <form action="/services/summary/" method = "POST" id = "reservation-form">
+    {% csrf_token %}
+    <input type="hidden" name="service" id = "service">
+    <input type="hidden" name="date" id = "date">
+  </form>
+
+
+    <div class="modal fade" id="reservation-confirm-modal" tabindex="-2" role="dialog" aria-labelledby="edit-client" aria-hidden="true" data-backdrop="false" data-keyboard="false">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="Edit-Title">Potwierdzenie rezerwacji</h5>
+            </button>
+          </div>
+          <div class="modal-body" id = "reservation-confirm-box">
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends "MainPage/base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+{% if success %}
+<script type="text/javascript">
+  $(window).on('load',function(){
+      $('#success-modal').modal('show');
+  });
+</script>
+{% endif %}
+
+
+  <div id = 'contact-form-box'>
+    <div>
+      <p id = "contact-form-text">Skontaktuj się z nami</p>
+    </div>
+    <form method="post" action="{% url 'MainPage:contact_form' %}">
+        {% csrf_token %}
+        {% bootstrap_form contact_form %}
+        <input type="submit" value="Wyślij" />
+    </form>
+  </div>
+</div>
+
+
+<div class="modal fade" id="success-modal" tabindex="-2" role="dialog" aria-labelledby="edit-client" aria-hidden="true" data-backdrop="false" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Edit-Title">Sukces</h5>
+        </button>
+      </div>
+      <div class="modal-body" id = "success-modal-box">
+        <p>Wiadomość została wysłana.</p>
+        <button class="btn btn-primary" onclick="window.location.href='/'">OK</button>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

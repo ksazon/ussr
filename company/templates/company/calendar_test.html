@@ -10,68 +10,53 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
   <script type="text/javascript" src='{% static 'company/scripts/locale-all.js' %}'></script>
   <script type="text/javascript" src='{% static 'company/scripts/main.js' %}'></script>
+  <script type="text/javascript" src='{% static 'company/scripts/getcalendar.js' %}'></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" />
   <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.print.css" />
   <link rel="stylesheet" href="{% static 'company/style.css' %}" />
 
+  {% csrf_token %}
   <script type="text/javascript">
-  $(document).ready(function() {
-
-    $("#calendar").fullCalendar({
-      locale: 'pl',
-  		defaultView: 'agendaWeek',
-
-  		views:{
-  		agenda:{
-  	 	    allDaySlot: false,
-  				minTime: "{{workday_start|date:"H:i:s"}}",
-  		    maxTime: "{{workday_end|date:"H:i:s"}}",
-  		    slotDuration: "00:15:00"
-  			}
-  		},
-
-    eventSources: [
-    {
-      events: [
-        {% for n in result %}
-        {
-          start: '{{n.from_time|date:"M. d Y H:i:s"}}',
-          end: '{{n.to_time|date:"M. d Y H:i:s"}}',
-        },
-        {% endfor %}
-        ],
-    }
-  ],
-
-  eventClick: function(event) {
-    if (event.start) {
-      let date = event.start;
-      let text = ("Czy chcesz zarezerwowac uslugę dnia " + date.format("D - M - Y") + " o godzinie " + date.format("H : mm?"));
-      $('#reservation-confirm-box').append('<div id = "reservation-text-box"><p id = "reservation-confirm-text">' + text + '</p><div><button id = "reservation-confirm-yes-button">Tak</button><button id = "reservation-confirm-no-button">Nie</button></div></div>');
-      $('#reservation-confirm-window').show();
-      $('#reservation-confirm-no-button').click(function(e){
-        e.preventDefault();
-        $('#reservation-confirm-window').hide();
-        $('#reservation-text-box').remove();
-      });
-    }
-  }
-
-
-
-  });
-});
+  var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
   </script>
 
+
 </head>
+<body>
 
-
-
-
-<div id = 'calendar'>
-</div>
-
-<div id = "reservation-confirm-window">
-  <div id = "reservation-confirm-box">
+  <div id = "select-service-group-box">
+    <h3>Wybierz grupę usług</h3>
+    <select id = "select-service-group">
+      <option value="" selected disabled hidden>Wybierz grupę usług</option>
+      {% for group in services_groups %}
+      <option value="{{group.id_se_group_dict}}">{{group.se_group_dict_name}}</option>
+      {% endfor %}
+    </select>
   </div>
+
+  <div id = "select-service-message">
+    <h3>Wybierz usługę</h3>
+  </div>
+
+<div id = "select-service-box">
+{% for group in services_groups %}
+    <select id = "{{group.id_se_group_dict}}"  class = "select-service disactive-select-service">
+      <option value="" selected disabled hidden>Wybierz usługę</option>
+      {% for service in group.services_in_group.all %}
+      <option value="{{service.id_se_dict}}">{{service.se_dict_name}}</option>
+      {% endfor %}
+    </select>
+{% endfor %}
 </div>
+
+
+  <div id = 'calendar-box'>
+  </div>
+
+  <div id = "reservation-confirm-window">
+    <div id = "reservation-confirm-box">
+    </div>
+  </div>
+
+
+</body>

@@ -1,0 +1,62 @@
+<head>
+  {% load staticfiles %}
+
+  {% csrf_token %}
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/locale/pl.js"></script>
+  <script type="text/javascript" src='{% static 'services/scripts/main.js' %}'></script>
+  <script type="text/javascript" src='{% static 'services/scripts/getcalendar.js' %}'></script>
+  <script type="text/javascript" src='{% static 'services/scripts/ajax_setup.js' %}'></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" />
+  <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.print.css" />
+
+  <script type="text/javascript">
+  var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+  </script>
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+
+    $("#calendar").fullCalendar({
+      locale : 'pl',
+  		defaultView: 'agendaWeek',
+      hiddenDays: [ 0 ],
+
+  		views:{
+  		agenda:{
+  	 	    allDaySlot: false,
+  				minTime: "{{workday_start|date:"H:i:s"}}",
+  		    maxTime: "{{workday_end|date:"H:i:s"}}",
+  		    slotDuration: "00:15:00"
+  			}
+  		},
+
+      validRange: {
+          start: '{{display_start|date:"Y-m-d"}}',
+          end: '{{display_end|date:"Y-m-d"}}',
+      },
+
+    eventSources: [
+    {
+      events: [
+        {% for n in worker_resource_usage %}
+        {
+          start: '{{n.start_timestamp|date:"Y-m-d H:i:s"}}',
+          end: '{{n.finish_timestamp|date:"Y-m-d H:i:s"}}',
+          title: '{{n.service.service_code.se_dict_name}} - {{n.service.client.get_client_full_name}}',
+        },
+        {% endfor %}
+        ],
+    }
+  ],
+
+  });
+});
+
+</script>
+<div id = 'calendar'>
+</div>

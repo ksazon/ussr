@@ -200,6 +200,7 @@ class WorkdayCalendarParams(models.Model):
     default_workday_end_time = models.TimeField(blank=True, null=True, verbose_name='Domyślny koniec czasu pracy')
     default_saturday_start_time = models.TimeField(blank=True, null=True, verbose_name='Domyślny początek czasu pracy w sobotę')
     default_saturday_end_time = models.TimeField(blank=True, null=True, verbose_name='Domyślny koniec czasu pracy w sobotę')
+    days_to_display = models.IntegerField(blank=True, null=False, default = 61, verbose_name='Liczba dni do wyswietlenias')
     # TODO do ukrycia
     # default_is_saturday_workday = models.BooleanField()
 

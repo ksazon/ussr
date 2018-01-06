@@ -2,30 +2,28 @@
 
 {% block content %}
 
-  <p>Temat: {{ machinetype }}</p>
-  <a href="{% url 'machines:new_machine' machinetype.id_machine_type %}">Dodaj nową maszynę</a>
+  <h4 align="center">Typ maszyn: {{ machinetype }} - {{ machinetype.machine_type_name }}</h4>
+  <p align="center"><a href="{% url 'machines:new_machine' machinetype.id_machine_type %}"><button type="button" class="btn btn-primary">Dodaj nową maszynę</button></a></p>
 <table class="table">
-<thead class="thead-dark">
+<thead class="thead-dark" align="center">
 <tr>
-<th scope="col">machine_name</th>
-<th scope="col">machinetype</th>
-<th scope="col">service_interval</th>
-<th scope="col">last_service</th>
-<th scope="col">is_operational</th>
-<th scope="col">notes</th>
-<th scope="col">edit</th>
+<th scope="col">Nazwa</th>
+<th scope="col">Serwis</th>
+<th scope="col">Ostatni serwis</th>
+<th scope="col">Sprawna</th>
+<th scope="col">Uwagi</th>
+<th scope="col">Edycja</th>
 </tr>
 </thead>
-  <tbody>
+  <tbody align="center">
   {% for machine in machines %}
     <tr>
       <td>{{ machine.machine_name }}</td>
-	  <td>{{ machine.machinetype }}</td>
 	  <td>{{ machine.service_interval }}</td>
 	  <td>{{ machine.last_service }}</td>
 	  <td>{{ machine.is_operational }}</td>
 	  <td>{{ machine.notes }}</td>
-	  <td><a href="{% url 'machines:edit_machine' machine.id_machine %}">Edytuj maszyne</a></td>
+	  <td><a href="{% url 'machines:edit_machine' machine.id_machine %}"><button type="button" class="btn btn-primary">Edytuj maszyne</button></a></td>
     </tr>
   {% endfor %}
 </tbody>

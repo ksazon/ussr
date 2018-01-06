@@ -1,17 +1,69 @@
-{% extends "base.html" %}
-
+{% extends "MainPage/base.html" %}
+{% load bootstrap4 %}
+{% load staticfiles %}
 {% block content %}
 
+<link rel="stylesheet" href="{% static "users/login.css" %}" />
+
   {% if form.errors %}
-  <p>Nazwa użytkownika i hasło są nieprawidłowe. Proszę spróbować ponownie.</p>
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#fail-modal').modal('show');
+    });
+</script>
   {% endif %}
 
-  <form method="post" action="{% url 'users:login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
+  <div class="modal fade" id="fail-modal" tabindex="-2" role="dialog" aria-labelledby="reservation-resignation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="Login-Title">Niepowodzenie logowania</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id = "reservation-resignation-confirmation">
+          <p>Nazwa użytkownika i hasło są nieprawidłowe. </p>
+          <p>Proszę spróbować ponownie.</p>
+          <div>
+            <button type="button" data-dismiss="modal" > OK </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <button name="submit">Zaloguj</button>
-  <input type="hidden" name="next" value="{% url 'MainPage:index' %}" />
-  </form>
+<div id = "login-grid">
+  <div id = "login-box">
+    <div id = "login-text">Zaloguj się</div>
+    <form method="post" action="{% url 'users:login' %}" class="form-horizontal">
+    {% csrf_token %}
+        <div class="form-group">
+            {{ form.username.errors }}
+            <label class="col-sm-6" control-label>Nazwa użytkownika:</label>{% bootstrap_field form.username show_label=False %}
+          </div>
+          <div class="form-group">
+              {{ form.password.errors }}
+              <label class="col-sm-3" control-label>Hasło:</label> {% bootstrap_field form.password show_label=False %}
+            </div>
+    {% buttons %}
+    <button name="submit" class="btn btn-primary">Zaloguj</button>
+    {% endbuttons %}
+    <input type="hidden" name="next" value="{% url 'MainPage:index' %}" />
+    </form>
+  </div>
+  <div id = "registration-box">
+    <div id = "registration-text">
+      <p>Nie masz jeszcze konta?</p>
+      <p>Zarejestruj się!</p>
+    </div>
+    <div id = "registration-button-box">
+      <button id = "registration-button" type="button" class="btn btn-success" onclick="location.href='/users/register/';">Rejestracja</button>
+    </div>
+  </div>
+</div>
+
 
 {% endblock content %}

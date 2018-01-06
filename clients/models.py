@@ -217,6 +217,9 @@ class Client(models.Model):
     default_company_branch = models.ForeignKey('company.CompanyBranch', models.DO_NOTHING, db_column='default_company_branch', default='main', related_name = '+', verbose_name='Oddział')
     client_user_login = models.OneToOneField('auth.User', models.DO_NOTHING, db_column = 'client_user_login', blank=True, null=True, verbose_name='Login')
 
+    def get_client_full_name(self):
+        name = self.first_name + ' ' + self.last_name
+        return name
 
     class Meta:
         managed = False

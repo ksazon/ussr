@@ -1,0 +1,23 @@
+{% extends "workers/base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+  <a href="{% url 'workers:woNotifications' %}"><button type="button" class="btn btn-primary">Powrót-notatki</button></a>
+  <br>
+  <br>
+  <p>Dodaj nowy alert:</p>
+  <form action="{% url 'workers:new_woNotification' %}" method='post' class="form-horizontal">
+    {% csrf_token %}
+    {% for field in form %}
+        <div class="form-group">
+            {{ field.errors }}
+            <label class="col-sm-3" control-label>{{ field.label_tag }}</label> {{ field }}
+          </div>
+    {% endfor %}
+    {% buttons %}
+    <button name="submit" class="btn btn-primary">Dodaj alert</button>
+    {% endbuttons %}
+
+  </form>
+
+{% endblock content %}

@@ -4,7 +4,8 @@ from . import views
 app_name = 'company'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^test/', views.generate_calendar, name='test'),
+    url(r'^reservation/', views.reservation, name='reservation'),
+    url(r'^get_calendar/', views.generate_calendar, name='get_calendar'),
 #
 #     url(r'^clients_all/$', views.clients_all, name='clients_all'),
 #     url(r'^client/(?P<client_id>\d+)/$', views.client, name='client'),

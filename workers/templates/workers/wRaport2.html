@@ -1,0 +1,37 @@
+{% extends "workers/base.html" %}
+
+{% block content %}
+<a href="{% url 'workers:wRaports' %}"><button type="button" class="btn btn-primary">Raporty</button></a>
+<a href="{% url 'workers:wRaport1' %}"><button type="button" class="btn btn-primary">Wszystkie Maszyny</button></a>
+<a href="{% url 'workers:wRaport3' %}"><button type="button" class="btn btn-primary">Pracownicy</button></a>
+<br>
+<br>
+
+<table class="table">
+<thead class="thead-dark">
+<tr>
+<th scope="col">Nazwa</th>
+<th scope="col">Typ maszyny</th>
+<th scope="col">Serwis</th>
+<th scope="col">Ostatni serwis</th>
+<th scope="col">Sprawna</th>
+<th scope="col">Notes</th>
+</tr>
+</thead>
+<tbody>
+{% for machine in machines %}
+
+<tr>
+    <td>{{ machine.machine_name }}</td>
+  <td>{{ machine.machine_type }}</td>
+  <td>{{ machine.service_interval }}</td>
+  <td>{{ machine.last_service }}</td>
+  <td>{{ machine.is_operational }}</td>
+  <td>{{ machine.notes }}</td>
+
+  </tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock content %}

@@ -1,0 +1,51 @@
+
+  <div id="map-1" class = "map-box"></div>
+  <div id="map-2" class = "map-box"></div>
+  <div id="map-3" class = "map-box"></div>
+
+    <script>
+      function initMap() {
+
+        var szara = { "lat" : 50.021624,
+                          "lng" : 19.985222};
+
+        var stojalkowskiego = { "lat" : 50.0062328,
+                      "lng" : 19.9514129};
+
+        var koszarowka = { "lat" : 50.011746,
+                          "lng" : 19.901430};
+
+        var map = new google.maps.Map(document.getElementById('map-1'), {
+          zoom: 16,
+          center: szara
+        });
+
+        var map2 = new google.maps.Map(document.getElementById('map-2'), {
+          zoom: 16,
+          center: koszarowka
+        });
+
+        var map3 = new google.maps.Map(document.getElementById('map-3'), {
+          zoom: 16,
+          center:  stojalkowskiego
+        });
+        var marker = new google.maps.Marker({
+          position: szara,
+          map: map,
+        });
+
+        var marker2 = new google.maps.Marker({
+          position: koszarowka,
+          map: map2,
+        });
+
+        var marker3 = new google.maps.Marker({
+          position: stojalkowskiego,
+          map: map3,
+        });
+      }
+    </script>
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA435D5JC2tSOJlByaAc26JIRhP-woZMTo&callback=initMap">
+    </script>

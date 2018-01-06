@@ -1,15 +1,76 @@
-{% extends "base.html" %}
+{% extends "MainPage/base.html" %}
+{% load bootstrap4 %}
 
 {% block content %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "users/registration.css" %}" />
 
-  <form method="post" action="{% url 'users:register' %}">
+{% if success %}
+<script type="text/javascript">
+  $(window).on('load',function(){
+      $('#success-modal').modal('show');
+  });
+</script>
+{% endif %}
+<div id = "register-client-data">
+  <div>
+    <div id = "registration-client-information-text">Rejestracja</div>
+  </div>
+  <form method="post" action="{% url 'users:register' %}" class="form-horizontal">
     {% csrf_token %}
-    {{ user_form.as_p }}
-    {{ name_form.as_p }}
-    {{ address_form.as_p }}
-
-    <button name="submit">Rejestruj</button>
+    <div class = "form-row">
+      {% bootstrap_field user_form.username form_group_class="form-group col-md-12" %}
+    </div>
+    <div class = "form-row">
+      {% bootstrap_field user_form.password1 form_group_class="form-group col-md-6" %}
+      {% bootstrap_field user_form.password2 form_group_class="form-group col-md-6" %}
+    </div>
+    <div class = "form-row">
+      {% bootstrap_field name_form.first_name form_group_class="form-group col-md-4" %}
+      {% bootstrap_field name_form.last_name form_group_class='form-group col-md-6' %}
+      {% bootstrap_field name_form.sex form_group_class="form-group col-md-2" %}
+    </div>
+    <div class = "form-row">
+      {% bootstrap_field address_form.email form_group_class="form-group col-md-12" %}
+    </div>
+    <div class = "form-row">
+      {% bootstrap_field address_form.phone form_group_class="form-group col-md-12" %}
+    </div>
+    <div class = "form-row">
+      {% bootstrap_field address_form.street form_group_class="form-group col-md-6" label_class="street-label"%}
+      {% bootstrap_field address_form.house_no form_group_class="form-group col-md-3" label_class="house-no-label" %}
+      {% bootstrap_field address_form.apartment_no form_group_class="form-group col-md-3" %}
+    </div>
+    <div class = "form-row">
+      {% bootstrap_field address_form.city form_group_class="form-group col-md-8" %}
+      {% bootstrap_field address_form.zip form_group_class="form-group col-md-4" %}
+    </div>
+    {% buttons %}
+    <button name="submit" class="btn btn-primary">Rejestruj</button>
+    {% endbuttons %}
     <input type="hidden" name="next" value="{% url 'MainPage:index' %}" />
   </form>
+</div>
+
+  <div class="modal fade" id="success-modal" tabindex="-2" role="dialog" aria-labelledby="reservation-resignation" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registration-Title">Powodzenie rejestracji</h5>
+        </div>
+        <div class="modal-body" id = "reservation-resignation-confirmation">
+          <p>Rejestracja na portalu powiodła się.</p>
+          <p>Możesz się już zalogować.</p>
+          <p>Dziękujemy!</p>
+          <div>
+            <button class="btn btn-primary" onclick="window.location.href='/'">OK</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 {% endblock content %}

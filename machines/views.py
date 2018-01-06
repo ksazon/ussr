@@ -3,28 +3,38 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, Http404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth import authenticate, login
+from utilities.models import Address, ResourcesUsage
+from services.models import SeDict, SeRequirement
+#from .tables import AllSerWorTable
 
 from .models import *
 from .forms import MachineTypeForm, MachineForm
 
+def is_logged_employee(user):
+    if user is not None:
+        return user.groups.filter(name='workers').exists()
+
+@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
 def index(request):
-    """Strona główna dla aplikacji ussr."""
     return render(request, 'machines/index.html')
 
-#@login_required
+@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
 def machinetypes(request):
-    machinetypes = MachineType.objects.all()
+    machinetypes = MachineType.objects.all().order_by('machine_type_name')
     context = {'machinetypes': machinetypes}
     return render(request, 'machines/machinetypes.html', context)
 
-#@login_required
+@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
 def machinetype(request, machinetype_id):
     machinetype = MachineType.objects.get(id_machine_type=machinetype_id)
     machines = machinetype.machine_set.all()
     context = {'machinetype': machinetype, 'machines': machines}
     return render(request, 'machines/machinetype.html', context)
 
-#@login_required
+@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
 def new_machinetype(request):
     if request.method != 'POST':
         form = MachineTypeForm()
@@ -40,7 +50,7 @@ def new_machinetype(request):
     context = {'form': form}
     return render(request, 'machines/new_machinetype.html', context)
 
-#@login_required
+@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
 def new_machine(request, machinetype_id):
     machinetype = MachineType.objects.get(id_machine_type=machinetype_id)
 
@@ -58,7 +68,7 @@ def new_machine(request, machinetype_id):
     context = {'machinetype': machinetype, 'form': form}
     return render(request, 'machines/new_machine.html', context)
 
-#@login_required
+@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
 def edit_machine(request, machine_id):
     machine = Machine.objects.get(id_machine=machine_id)
     machinetype = machine.machine_type
