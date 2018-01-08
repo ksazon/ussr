@@ -33,10 +33,11 @@ def service(request, segroupdict_id):
 
 
 def services(request):
-    services_groups = SeGroupDict.objects.all()
+    segroupdict = SeGroupDict.objects.all()
     services = SeDict.objects.all()
-    context = {'services_groups': services_groups, 'services': services}
+    context = {'services': services, 'categories': segroupdict}
     return render(request, 'services/services.html', context)
+
 
 # Displaying Services
 @login_required
