@@ -119,33 +119,6 @@ footer {
 }
 
 
-.map-box{
-  width: 400px;
-  height: 300px;
-  padding-bottom: 20px;
-}
-
-.branch-box{
-  margin-right: 10%;
-  margin-left: 10%;
-  display: grid;
-  grid-template-columns: 500px 500px;
-  grid-template-rows: 300px 300px 300px;
-  grid-column-gap: 15%;
-  grid-row-gap: 20px;
-}
-
-.address-box{
-  padding-top: 2em;
- grid-column: 1/ 1;
-
-}
-
-#map-div{
-  grid-column: 2 / 2;
-  grid-row-start: 1;
-}
-
 #edit-client-data{
   margin-top: 10vh;
   margin-left: 30%;

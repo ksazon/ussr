@@ -19,7 +19,10 @@
     <form method="post" action="{% url 'MainPage:contact_form' %}">
         {% csrf_token %}
         {% bootstrap_form contact_form %}
-        <input type="submit" value="Wyślij" />
+        <!--<input type="submit" value="Wyślij" /> -->
+        {% buttons %}
+          <button name="submit" class="btn btn-primary">Wyślij</button>
+        {% endbuttons %}
     </form>
   </div>
 </div>
@@ -30,7 +33,6 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="Edit-Title">Sukces</h5>
-        </button>
       </div>
       <div class="modal-body" id = "success-modal-box">
         <p>Wiadomość została wysłana.</p>

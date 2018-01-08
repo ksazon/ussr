@@ -7,17 +7,17 @@ function submitreservation(){
       // handle a successful response
       success : function(response) {
           if (response == 'success'){
-            $('#reservation-confirm-window').show();
+            $('#success-modal').modal('show');
             $('#ok-button').before('<p>Rezerwacja się udała</p>');
           }
           else{
-            $('#reservation-confirm-window').show();
+            $('#success-modal').modal('show');
             $('#ok-button').before('<p>Rezerwacja się nie udała</p>');
           }
       },
 
   });
-
+   
 }
 
 function submitWorkerReservation(){

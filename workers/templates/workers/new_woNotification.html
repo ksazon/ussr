@@ -5,17 +5,22 @@
   <a href="{% url 'workers:woNotifications' %}"><button type="button" class="btn btn-primary">Powrót-notatki</button></a>
   <br>
   <br>
-  <p>Dodaj nowy alert:</p>
+  <h4 class="col-md-8 offset-md-3">Dodaj nowy alert:</h4>
+  <br>
   <form action="{% url 'workers:new_woNotification' %}" method='post' class="form-horizontal">
     {% csrf_token %}
     {% for field in form %}
+    <div class="row">
+    <div class="col-md-8 offset-md-2">
         <div class="form-group">
             {{ field.errors }}
-            <label class="col-sm-3" control-label>{{ field.label_tag }}</label> {{ field }}
+            <label class="col-sm-3" control-label><b>{{ field.label_tag }}</b></label> {{ field }}
           </div>
+        </div>
+        </div>
     {% endfor %}
     {% buttons %}
-    <button name="submit" class="btn btn-primary">Dodaj alert</button>
+    <div class="col-md-8 offset-md-3"><button name="submit" class="btn btn-primary">Dodaj alert</button></div>
     {% endbuttons %}
 
   </form>

@@ -4,9 +4,9 @@
 <a href="{% url 'workers:wRaports' %}"><button type="button" class="btn btn-primary">Raporty</button></a>
 <a href="{% url 'workers:wRaport2' %}"><button type="button" class="btn btn-primary">Sprawne Maszyny</button></a>
 <a href="{% url 'workers:wRaport3' %}"><button type="button" class="btn btn-primary">Pracownicy</button></a>
+<a href="{% url 'workers:wRaport4' %}"><button type="button" class="btn btn-primary">Wykorzystanie zasobów</button></a>
 <br>
 <br>
-
 <table class="table">
 <thead class="thead-dark">
 <tr>
@@ -20,16 +20,14 @@
 </thead>
 <tbody>
 {% for machine in machines %}
-
 <tr>
-    <td>{{ machine.machine_name }}</td>
+  <td>{{ machine.machine_name }}</td>
   <td>{{ machine.machine_type }}</td>
   <td>{{ machine.service_interval }}</td>
   <td>{{ machine.last_service }}</td>
   <td>{{ machine.is_operational }}</td>
   <td>{{ machine.notes }}</td>
-
-  </tr>
+</tr>
 {% endfor %}
 </tbody>
 </table>

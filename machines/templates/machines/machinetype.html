@@ -13,6 +13,7 @@
 <th scope="col">Sprawna</th>
 <th scope="col">Uwagi</th>
 <th scope="col">Edycja</th>
+<th scope="col">Kasowanie</th>
 </tr>
 </thead>
   <tbody align="center">
@@ -24,6 +25,7 @@
 	  <td>{{ machine.is_operational }}</td>
 	  <td>{{ machine.notes }}</td>
 	  <td><a href="{% url 'machines:edit_machine' machine.id_machine %}"><button type="button" class="btn btn-primary">Edytuj maszynę</button></a></td>
+    <td><a href="{% url 'machines:delete_machine' machine.id_machine %}"><button type="button" class="btn btn-danger">Usuń maszynę</button></a></td>
     </tr>
   {% endfor %}
 </tbody>

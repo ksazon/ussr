@@ -12,7 +12,7 @@ function getcalendar(service_code){
 
   $.ajax({
       url : "/services/get_calendar/", // the endpoint
-      type : "POST", // http method
+      type : "GET", // http method
       data : {'service_code' : service_code}, // data sent with the post request
 
       // handle a successful response

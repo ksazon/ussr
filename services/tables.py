@@ -8,8 +8,8 @@ TEMPLATE = """
 class ClientServicesTable(tables.Table):
 
     service_name = tables.Column(accessor = 'service.service_code.se_dict_name')
-    service_detetime_start = tables.Column(accessor = 'service.planned_start')
-    service_detetime_end = tables.Column(accessor = 'service.planned_end')
+    service_detetime_start = tables.DateTimeColumn(accessor = 'service.planned_start', format="d-m-Y H:i")
+    service_detetime_end = tables.DateTimeColumn(accessor = 'service.planned_end', format="d-m-Y H:i")
     service_price = tables.Column(accessor = 'service.service_code.base_price')
     employee_name = tables.Column(accessor = 'worker.get_employee_name', orderable = False)
     resignation_button = tables.TemplateColumn(TEMPLATE, verbose_name = '')
@@ -23,8 +23,8 @@ class ClientServicesTable(tables.Table):
 class ClientFinishedServicesTable(tables.Table):
 
     service_name = tables.Column(accessor = 'service.service_code.se_dict_name')
-    service_detetime_start = tables.Column(accessor = 'service.planned_start')
-    service_detetime_end = tables.Column(accessor = 'service.planned_end')
+    service_detetime_start = tables.DateTimeColumn(accessor = 'service.planned_start', format="d-m-Y H:i")
+    service_detetime_end = tables.DateTimeColumn(accessor = 'service.planned_end', format="d-m-Y H:i")
     service_price = tables.Column(accessor = 'service.service_code.base_price')
     employee_name = tables.Column(accessor = 'worker.get_employee_name', orderable = False)
 
@@ -36,8 +36,8 @@ class ClientFinishedServicesTable(tables.Table):
 class WorkerServicesTable(tables.Table):
 
     service_name = tables.Column(accessor = 'service.service_code.se_dict_name')
-    service_detetime_start = tables.Column(accessor = 'service.planned_start')
-    service_detetime_end = tables.Column(accessor = 'service.planned_end')
+    service_detetime_start = tables.DateTimeColumn(accessor = 'service.planned_start', format="d-m-Y H:i")
+    service_detetime_end = tables.DateTimeColumn(accessor = 'service.planned_end', format="d-m-Y H:i")
     service_price = tables.Column(accessor = 'service.service_code.base_price')
     client_first_name = tables.Column(accessor = 'service.client.first_name')
     client_last_name = tables.Column(accessor = 'service.client.last_name')
@@ -51,8 +51,8 @@ class WorkerServicesTable(tables.Table):
 class AllServicesTable(tables.Table):
 
     service_name = tables.Column(verbose_name = 'Nazwa usługi', accessor = 'service.service_code.se_dict_name')
-    service_detetime_start = tables.DateTimeColumn(accessor = 'service.planned_start')
-    service_detetime_end = tables.DateTimeColumn(accessor = 'service.planned_end')
+    service_detetime_start = tables.DateTimeColumn(accessor = 'service.planned_start', format="d-m-Y H:i")
+    service_detetime_end = tables.DateTimeColumn(accessor = 'service.planned_end', format="d-m-Y H:i")
     service_price = tables.Column(verbose_name = 'Bazowa cena [zł]', accessor = 'service.service_code.base_price')
     client_first_name = tables.Column(accessor = 'service.client.first_name', visible = False)
     client_last_name = tables.Column(accessor = 'service.client.last_name', visible = False)

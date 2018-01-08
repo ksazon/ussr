@@ -1,42 +1,67 @@
+{% extends "MainPage/base.html" %}
 
+{% block content %}
 {% load staticfiles %}
 
 <head>
   <script type="text/javascript" src="http://momentjs.com/downloads/moment.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src='{% static 'services/scripts/worker_summary.js' %}'></script>
   <script type="text/javascript" src='{% static 'services/scripts/ajax_setup.js' %}'></script>
   <link rel="stylesheet" href="{% static 'services/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'services/summary.css' %}" />
 
   {% csrf_token %}
   <script type="text/javascript">
   var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
   </script>
 
+
+
 </head>
-
-<div>
-  <h1>Podsumowanie rezerwacji</h1>
-  <h2>Klient: {{client.first_name}} {{client.last_name}}</h2>
-  <h2>Nazwa usługi: {{service.se_dict_name}}</h2>
-  <h2>Data: {{datetime|date:"Y-m-d"}}</h2>
-  <h2>Godzina: {{datetime|date:"H:i"}}</h2>
-  <h2>Przewidywany czas trwania: {{service.avg_time}} min</h2>
-  <h2>Cena: {{service.base_price}} zl</h2>
-</div>
-<form id = "reservation-form">
-  {% csrf_token %}
-  <input type="hidden" name="id_client" id = "id_client" value = "{{client.id_client}}">
-  <input type="hidden" name="service" id = "service" value = "{{service.id_se_dict}}">
-  <input type="hidden" name="date" id = "date" value = "{{datetime|date:"Y-m-d H:i"}}">
-  <input type="checkbox" id="facture" name="facture">
-  <label for="facture">Czy utworzyć fakturę vat?</label>
-  <button id = "submit">Potwierdź</button>
-</form>
-<button id = "resignation">Zrezygnuj</button>
-
-<div id = "reservation-confirm-window">
-  <div id = "reservation-confirm-box">
-    <input type="button" onclick="location.href='/employee/';" value="Ok" id = "ok-button" />
+<div id = "reservation-confirm-box">
+  <div id = "reservation-text-box">
+    <h1 id = "text-header">Podsumowanie rezerwacji</h1>
+    <p>Klient: {{client.get_client_full_name}}</p>
+    <p>Nazwa usługi: {{service.se_dict_name}}</p>
+    <p>Data: {{datetime|date:"Y-m-d"}}</p>
+    <p>Godzina: {{datetime|date:"H:i"}}</p>
+    <p>Przewidywany czas trwania: {{se_req.time_minutes}} min</p>
+    <p>Cena: {{service.base_price}} zl</p>
+  </div>
+  <div>
+      <form id = "reservation-form" class = "facture">
+        {% csrf_token %}
+        <input type="hidden" name="id_client" id = "id_client" value = "{{client.id_client}}">
+        <input type="hidden" name="service" id = "service" value = "{{service.id_se_dict}}">
+        <input type="hidden" name="date" id = "date" value = "{{datetime|date:"Y-m-d H:i"}}">
+        <input type="checkbox" name="facture">
+        <label for="facture" id = "facture">Czy utworzyć fakturę vat?</label>
+        <div id = "buttons">
+          <button id = "submit" class="btn btn-success">Potwierdź</button>
+          <button id = "resignation" class="btn btn-danger">Zrezygnuj</button>
+        </div>
+      </form>
   </div>
 </div>
+
+
+
+<div class="modal fade" id="success-modal" tabindex="-2" role="dialog" aria-labelledby="edit-client" aria-hidden="true" data-backdrop="false" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Edit-Title">Sukces</h5>
+        </button>
+      </div>
+      <div class="modal-body" id = "success-modal-box">
+        <p>Usługa została zarezerwowana pomyślnie.</p>
+        <button class="btn btn-primary" onclick="window.location.href='/employee/'">OK</button>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

@@ -3,28 +3,38 @@
 
 {% block content %}
 
-  <h1>Raporty:</h1>
-  <div class="row">
-  <div class="col-sm-6" align="center">
+  <h1 align="center">Raporty</h1>
+<div class="row">
+ <div class="col-sm-6" align="center">
   <div class="card">
     <div class="card-header">
-<h4>Raporty do maszyn:</h4>
+     <h4>Raporty do maszyn</h4>
+    </div>
+  <div class="card-body">
+    <p><a href="{% url 'workers:wRaport1' %}"><button type="button" class="btn btn-primary">Wszystkie Maszyny</button></a>
+    <a href="{% url 'workers:wRaport2' %}"><button type="button" class="btn btn-primary">Sprawne Maszyny</button></a></p>
+  </div>
+ </div>
 </div>
+ <div class="col-sm-6" align="center">
+  <div class="card">
+    <div class="card-header">
+      <h4>Raporty o pracownikach</h4>
+    </div>
     <div class="card-body">
-  <p><a href="{% url 'workers:wRaport1' %}"><button type="button" class="btn btn-primary">Wszystkie Maszyny</button></a>
-  <a href="{% url 'workers:wRaport2' %}"><button type="button" class="btn btn-primary">Sprawne Maszyny</button></a></p>
-</div>
-</div>
-</div>
+       <p><a href="{% url 'workers:wRaport3' %}"><button type="button" class="btn btn-primary">Pracownicy aktywni</button></a></p>
+    </div>
+   </div>
+  </div>
 <div class="col-sm-6" align="center">
   <div class="card">
     <div class="card-header">
-  <h4>Raporty o pracownikach:</h4>
-</div>
-    <div class="card-body">
-  <p><a href="{% url 'workers:wRaport3' %}"><button type="button" class="btn btn-primary">Pracownicy aktywni</button></a></p>
-</div>
-</div>
+      <h4>Zasoby</h4>
+    </div>
+     <div class="card-body">
+       <p><a href="{% url 'workers:wRaport4' %}"><button type="button" class="btn btn-primary">Wykorzystanie zasobów</button></a></p>
+     </div>
+  </div>
 </div>
 </div>
 {% endblock content %}

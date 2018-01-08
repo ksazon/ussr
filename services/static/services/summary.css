@@ -1,0 +1,32 @@
+#reservation-confirm-box{
+  margin-top: 10vh;
+  margin-left: 7%;
+  margin-right: 7%;
+  margin-bottom: 20vh;
+  border: 1px;
+  border-style: solid;
+  border-radius: 15px;
+}
+
+#reservation-text-box{
+  padding-left: 10%;
+  padding-top: 7vh;
+}
+
+#text-header{
+  margin-bottom: 4vh;
+}
+
+#reservation-text-box p{
+font-size: 22px;
+}
+
+.facture{
+  padding-left: 10%;
+  font-size: 17px;
+}
+
+#buttons{
+  margin-top: 10vh;
+  margin-bottom: 5vh;
+}

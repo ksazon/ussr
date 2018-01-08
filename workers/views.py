@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import user_passes_test
 from .models import Worker
-from utilities.models import Address
+from utilities.models import Address, ResourcesUsage
 from .forms import WorkerAddressForm, WorkerPersonalInformationsForm, WoNotificationForm
 from django.core.exceptions import ObjectDoesNotExist
 from .models import WoNotification
@@ -18,8 +18,15 @@ def is_logged_employee(user):
     if user is not None:
         return user.groups.filter(name='workers').exists()
 
+def is_logged_and_in_worker_table(user):
+    if user is not None:
+        return Worker.objects.filter(user_login = user.id).exists()
 
-@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+def is_not_in_worker_table(request):
+    return render(request, 'workers/is_not_in_worker_table.html')
+
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_and_in_worker_table, login_url = '/employee/is_not_in_worker_table/', redirect_field_name = None)
 def change_personal_informations(request):
 
     try:
@@ -75,15 +82,15 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('MainPage:index'))
 
-
-@user_passes_test(is_logged_employee, login_url = '/users/login', redirect_field_name = None)
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_and_in_worker_table, login_url = '/employee/is_not_in_worker_table/', redirect_field_name = None)
 def employee_main(request):
     date = datetime.date.today().strftime('%m/%d/%y')
     report_form = ReportFormatForm()
     return  render(request, 'workers/index.html', {'date' : date, 'report_form' : report_form})
 
 
-@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def woNotifications(request):
     woNotifications = WoNotification.objects.order_by('-id_wo_notification')
     context = {'woNotifications': woNotifications}
@@ -95,7 +102,7 @@ def woNotification(request, woNotification_id):
     context = {'woNotification': woNotification}
     return render(request, 'workers/woNotification.html', context)
 
-@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def new_woNotification(request):
     if request.method != 'POST':
         form = WoNotificationForm()
@@ -112,7 +119,7 @@ def new_woNotification(request):
     return render(request, 'workers/new_woNotification.html', context)
 
 
-@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def edit_woNotification(request, woNotification_id):
     woNotification = WoNotification.objects.get(id_wo_notification=woNotification_id)
     #if topic.owner != request.user:
@@ -129,25 +136,31 @@ def edit_woNotification(request, woNotification_id):
     context = {'woNotification': woNotification, 'form': form}
     return render(request, 'workers/edit_woNotification.html', context)
 
-@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def wRaports(request):
     #woNotifications = WoNotification.objects.order_by('-id_wo_notification')
     return render(request, 'workers/wRaports.html')
 
-@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def wRaport1(request):
     machines = Machine.objects.all().order_by('machine_type')
     context = {'machines': machines}
     return render(request, 'workers/wRaport1.html', context)
 
-@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def wRaport2(request):
     machines = Machine.objects.filter(is_operational=True).order_by('machine_type')
     context = {'machines': machines}
     return render(request, 'workers/wRaport2.html', context)
 
-@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def wRaport3(request):
     workers = Worker.objects.all().filter(active=True).order_by('last_name')
     context = {'workers': workers}
     return render(request, 'workers/wRaport3.html', context)
+
+@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+def wRaport4(request):
+    resources = ResourcesUsage.objects.all().order_by('-finish_timestamp')
+    context = {'resources': resources}
+    return render(request, 'workers/wRaport4.html', context)

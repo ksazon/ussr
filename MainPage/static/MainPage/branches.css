@@ -1,0 +1,46 @@
+.map-box{
+  padding-left: 10%;
+  padding-right: 10%;
+  width: 80%;
+  height: 300px;
+}
+
+.branch-box{
+  margin-right: 10%;
+  margin-left: 10%;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 300px 300px 300px;
+  grid-row-gap: 20px;
+}
+
+.address-box{
+  padding-left: 10%;
+  padding-top: 2em;
+ grid-column: 1/ 1;
+}
+
+#map-1{
+  height: 100%;
+  grid-column: 2 / 2;
+  grid-row-start: 1;
+}
+#map-2{
+  height: 100%;
+  grid-column: 2 / 2;
+  grid-row-start: 2;
+}
+#map-3{
+  height: 100%;
+  grid-column: 2 / 2;
+  grid-row-start: 3;
+}
+
+.grid-row-text:nth-child(even){
+  background-color: rgba(28, 27, 28, 0.62);
+  color:white;
+}
+
+.grid-row-map:nth-child(odd){
+  background-color: rgba(28, 27, 28, 0.39);
+}

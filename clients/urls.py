@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^send_email/', views.SendEmail, name = 'send_email'),
     url(r'^get_client_table/', views.Client_table, name = 'get_client_table'),
     url(r'^generate_clients_report/', views.generate_clients_report, name = 'generate_clients_report'),
+    url(r'^is_not_in_client_table/', views.is_not_in_client_table, name = 'generate_clients_report'),
 ]

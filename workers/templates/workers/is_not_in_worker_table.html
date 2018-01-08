@@ -1,0 +1,12 @@
+{% extends "Workers/base.html" %}
+
+{% block content%}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "clients/is_not_client.css" %}" />
+
+<div id = "message-box">
+  <p id = "first-line">Przepraszamy! Nie jesteś zarejestrowany w tabeli pracowników.</p>
+  <p id = "second-line">W celu nadania lub przywrócenia pracownika skontaktuj się z administratorem.<p>
+</div>
+
+{% endblock %}

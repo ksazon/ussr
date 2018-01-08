@@ -1,0 +1,13 @@
+{% extends "machines/base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+<br>
+<form method="post">{% csrf_token %}
+  <div class="col-md-8 offset-md-3">
+    <h5>Czy na pewno chcesz usunąć maszynę "{{ machine }}" ?</h5>
+    <br>
+      {% buttons %}
+    <div class="col-md-8 offset-md-3"><button name="submit" class="btn btn-danger">Usuń maszynę</button></div>
+    {% endbuttons %}
+</form>
+{% endblock content %}

@@ -1,19 +1,19 @@
 {% extends "MainPage/base.html" %}
-
+{% load staticfiles %}
 {% block content %}
 
+<link rel="stylesheet" type="text/css" href="{% static "MainPage/branches.css" %}" />
 <div style="margin: 50px">
   <h2>Nasze placówki</h2>
 </div>
 
 
 <div class = "branch-box">
-  <div id = "map-div">
-  {% include "MainPage/google-maps.html" %}
-  </div>
-  {% for branch in branches_list %}
 
-    <div class = "address-box">
+  {% include "MainPage/google-maps.html" %}
+
+  {% for branch in branches_list %}
+    <div class = "address-box grid-row-text">
           <h3>
              {{ branch.address.street }} {{ branch.address.house_no }}{% if branch.address.apartment_no %}/{{branch.address.apartment_no}}{% endif %}
           </h3>
@@ -31,6 +31,10 @@
           </h3>
   </div>
   {% endfor %}
+
+  <div id ="first-row"></div>
+  <div id ="second-row"></div>
+  <div id ="third-row"></div>
 
 </div>
 

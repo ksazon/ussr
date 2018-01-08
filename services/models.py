@@ -8,7 +8,7 @@ from django.db import models
 class SeDict(models.Model):
     id_se_dict = models.CharField(primary_key=True, max_length=10, verbose_name='Id')
     se_dict_name = models.CharField(unique=True, max_length=200, verbose_name='Nazwa')
-    se_group = models.ForeignKey('SeGroupDict', blank=True, null=True, db_column='se_group', verbose_name='Grupa serwisów', related_name = 'services_in_group')
+    se_group = models.ForeignKey('SeGroupDict', db_column='se_group', verbose_name='Grupa serwisów', related_name = 'services_in_group')
     base_price = models.DecimalField(blank=True, null=True, decimal_places=2, max_digits=8, verbose_name='Cena bazowa')
     location_type = models.ForeignKey('company.LocationType', models.DO_NOTHING, db_column='location_type', blank=True, null=True, verbose_name='Wymagany typ lokacji')
     # TODO do ukrycia

@@ -7,17 +7,15 @@ function submitreservation(){
       // handle a successful response
       success : function(response) {
           if (response == 'success'){
-            $('#reservation-confirm-window').show();
+            $('#success-modal').modal('show');
             $('#ok-button').before('<p>Rezerwacja sie udala</p>');
           }
           else{
-            $('#reservation-confirm-window').show();
+            $('#success-modal').modal('show');
             $('#ok-button').before('<p>Rezerwacja sie nie udala</p>');
           }
       },
-
   });
-
 }
 
 function submitWorkerReservation(){
@@ -29,11 +27,11 @@ function submitWorkerReservation(){
       // handle a successful response
       success : function(response) {
           if (response == 'success'){
-            $('#reservation-confirm-window').show();
+            $('#success-modal').modal('show');
             $('#ok-button').before('<p>Rezerwacja sie udala</p>');
           }
           else{
-            $('#reservation-confirm-window').show();
+            $('#success-modal').modal('show');
             $('#ok-button').before('<p>Rezerwacja sie nie udala</p>');
           }
       },
@@ -55,7 +53,7 @@ $(document).ready(function() {
   });
 
   $('#resignation').click(function(){
-    window.location.replace("/services/worker_reservation/");
+    window.location.replace("/employee/");
   });
 
   $('#reservation-form').on('submit', function(e){

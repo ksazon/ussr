@@ -4,22 +4,28 @@
 <a href="{% url 'workers:wRaports' %}"><button type="button" class="btn btn-primary">Raporty</button></a>
 <a href="{% url 'workers:wRaport1' %}"><button type="button" class="btn btn-primary">Wszystkie Maszyny</button></a>
 <a href="{% url 'workers:wRaport2' %}"><button type="button" class="btn btn-primary">Sprawne Maszyny</button></a>
-<a href="{% url 'workers:wRaport4' %}"><button type="button" class="btn btn-primary">Wykorzystanie zasobów</button></a>
 <br><br>
 <table class="table">
 <thead class="thead-dark" align="center">
 <tr>
-<th scope="col">Imię</th>
-<th scope="col">Nazwisko</th>
-<th scope="col">Stanowisko</th>
+<th scope="col">Serwis</th>
+<th scope="col">Maszna</th>
+<th scope="col">Pracownik</th>
+<th scope="col">Lokacja</th>
+<th scope="col">TS początku</th>
+<th scope="col">TS końca</th>
 </tr>
 </thead>
 <tbody align="center">
-{% for worker in workers %}
+{% for resource in resources %}
+
 <tr>
-  <td>{{ worker.first_name }}</td>
-  <td>{{ worker.last_name }}</td>
-  <td>{{ worker.worker_title }}</td>
+  <td>{{ resource.service }}</td>
+  <td>{{ resource.machine }}</td>
+  <td>{{ resource.worker }}</td>
+  <td>{{ resource.location }}</td>
+  <td>{{ resource.start_timestamp}}</td>
+  <td>{{ resource.finish_timestamp }}</td>
   </tr>
 {% endfor %}
 </tbody>

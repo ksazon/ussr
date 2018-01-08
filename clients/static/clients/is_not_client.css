@@ -1,0 +1,19 @@
+#message-box{
+  margin-top: 30vh;
+  margin-bottom: 45vh;
+}
+
+#first-line{
+  text-align: center;
+  font-size: 6vh;
+}
+
+#second-line{
+  text-align: center;
+  font-size: 3vh;
+}
+
+#contact{
+  text-align: center;
+  font-size: 3vh;
+}

@@ -19,7 +19,7 @@ class CheckBoxColumnWithName(tables.CheckBoxColumn):
 
 class ClientTable(tables.Table):
     selection = CheckBoxColumnWithName(accessor='id_client', exclude_from_export=True, orderable=False)
-    edit = tables.TemplateColumn(TEMPLATE, exclude_from_export=True, orderable=False)
+    edit = tables.TemplateColumn(TEMPLATE, exclude_from_export=True, orderable=False, verbose_name="Edytuj")
     napisz = tables.TemplateColumn(EMAIL, exclude_from_export=True, orderable=False)
     zarezerwuj = tables.TemplateColumn(RESERVATION, exclude_from_export=True, orderable=False)
     class Meta:

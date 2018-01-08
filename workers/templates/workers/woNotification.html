@@ -2,8 +2,9 @@
 
 {% block content %}
   <a href="{% url 'workers:woNotifications' %}"><button type="button" class="btn btn-primary">Powrót-notatki</button></a>
-  <p><b>Temat:</b> {{ woNotification.notification_subject }}</p>
-
+  <div class="row">
+   <div class="col-md-8 offset-md-2">
+   <p><b>Temat:</b> {{ woNotification.notification_subject }}</p>
     <p><b>Id:</b>{{ woNotification.id_wo_notification }}</p>
 	  <p><b>Pracownik:</b> {{ woNotification.worker }}</p>
 	  <p><b>Grupa pracowników:</b> {{ woNotification.worker_group }}</p>
@@ -12,8 +13,9 @@
 	  <p><b>Ważność:</b> {{ woNotification.severity }}</p>
 	  <!-- <p><b>Oznaczone jako przeczytane:</b> {{ woNotification.marked_as_read }}</p> -->
 	  <!-- <p><b>Oddział:</b> {{ woNotification.company_branch }}</p> -->
-
-    <a href="{% url 'workers:edit_woNotification' woNotification.id_wo_notification %}"><button type="button" class="btn btn-primary">Edycja alertu</button></a>
+  </div>
+ </div>
+    <div class="col-md-8 offset-md-3"><a href="{% url 'workers:edit_woNotification' woNotification.id_wo_notification %}"><button type="button" class="btn btn-primary">Edycja alertu</button></a></div>
 
 
 {% endblock content %}

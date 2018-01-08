@@ -84,3 +84,16 @@ def edit_machine(request, machine_id):
 
     context = {'machine': machine, 'machinetype': machinetype, 'form': form}
     return render(request, 'machines/edit_machine.html', context)
+
+@user_passes_test(is_logged_employee, login_url = 'users/login/', redirect_field_name = None)
+def delete_machine(request, machine_id):
+    machine = Machine.objects.get(id_machine=machine_id)
+    machinetype = machine.machine_type
+
+    if request.method == 'POST':
+        machine.delete()
+        return HttpResponseRedirect(reverse('machines:machinetype',
+                                    args=[machinetype.id_machine_type]))
+
+    context = {'machine': machine, 'machinetype': machinetype}
+    return render(request, 'machines/delete_machine.html', context)

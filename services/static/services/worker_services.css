@@ -1,0 +1,25 @@
+#buttons {
+  margin-bottom: 4vh;
+  margin-left: 1%;
+}
+
+#format-form{
+  display: inline;
+}
+
+#format-button{
+  display: inline-block;
+}
+
+.fieldo{
+  display: inline;
+}
+
+#funnel {
+  margin-bottom: 2px;
+  width: 25px;
+  height: 27.78px;
+}
+
+#filter-text{
+}

@@ -21,6 +21,10 @@ from .tables import AllServicesTable, ClientServicesTable, ClientFinishedService
 from django_tables2 import RequestConfig
 from .filters import ResourcesUsageFilter
 from django_tables2.export.export import TableExport
+from workers.views import is_logged_and_in_worker_table, is_logged_employee
+from clients.views import is_logged_client
+from django.contrib.auth.decorators import user_passes_test
+
 
 def service(request, segroupdict_id):
     service = SeDict.objects.filter(se_group=segroupdict_id)
@@ -29,17 +33,14 @@ def service(request, segroupdict_id):
 
 
 def services(request):
-    services = SeDict.objects.all().order_by('se_group')
-    segrupes = SeDict.objects.all().filter(se_group="ZWIERZ")
-    segrupees = SeDict.objects.all().filter(se_group="SAMOCHOD")
-    segrupeees = SeDict.objects.all().filter(se_group=None)
-    segroupdicts = SeGroupDict.objects.all()
-    #ses = SeDict.objects.all()
-    context = {'services': services, 'segrupes':segrupes, 'segrupees':segrupees, 'segrupeees': segrupeees, 'segroupdicts':segroupdicts}
+    services_groups = SeGroupDict.objects.all()
+    services = SeDict.objects.all()
+    context = {'services_groups': services_groups, 'services': services}
     return render(request, 'services/services.html', context)
 
 # Displaying Services
-
+@login_required
+@user_passes_test(is_logged_client, login_url = '/clients/is_not_in_client_table/', redirect_field_name = None)
 def client_services(request):
     request_client = Client.objects.get(client_user_login = request.user.id)
     client_services = Service.objects.filter(client = request_client)
@@ -60,6 +61,8 @@ def client_services(request):
 
     return render(request, 'services/client_services.html', context)
 
+@login_required
+@user_passes_test(is_logged_client, login_url = '/client/is_not_in_client_table/', redirect_field_name = None)
 def client_service_resignation(request):
     if request.method == 'POST' and request.is_ajax():
         service_resources_usage = get_object_or_404(ResourcesUsage, id_resources_usage = request.POST.get("id_resources_usage"))
@@ -76,6 +79,8 @@ def client_service_resignation(request):
         html = '<p>Rezygnacja nie powiodla się. Spróbuj później lub skontaktuj się z nami</p>'
         return HttpResponse(html)
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_and_in_worker_table, login_url = '/workers/is_not_in_worker_table/', redirect_field_name = None)
 def worker_services_table(request):
     queryset = ResourcesUsage.objects.select_related().all()
     f = ResourcesUsageFilter(request.GET, queryset=queryset)
@@ -92,9 +97,9 @@ def worker_services_table(request):
     return render(request, 'services/worker_services.html', context)
 
 # Generate Service reports
-
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_and_in_worker_table, login_url = '/workers/is_not_in_worker_table/', redirect_field_name = None)
 def generate_service_report(request):
-
     if request.method == 'GET':
 
         queryset = ResourcesUsage.objects.select_related().all()
@@ -106,6 +111,8 @@ def generate_service_report(request):
             exporter = TableExport(export_format, table)
             return exporter.response('report.{}'.format(export_format))
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
+@user_passes_test(is_logged_and_in_worker_table, login_url = '/workers/is_not_in_worker_table/', redirect_field_name = None)
 def generate_weakly_worker_services_report(request):
 
     if request.method == 'GET':
@@ -121,7 +128,6 @@ def generate_weakly_worker_services_report(request):
             return exporter.response('weekly_report.{}'.format(export_format))
 
 # Client Service reservation
-
 def reservation(request):
 
     services_groups = SeGroupDict.objects.all()
@@ -133,28 +139,39 @@ def reservation(request):
 
     return render(request, 'services/calendar_for_reservation.html', context)
 
+@login_required
+@user_passes_test(is_logged_client, login_url = '/clients/is_not_in_client_table/', redirect_field_name = None)
 def generate_summary(request):
     if request.method == 'POST':
         reservation_form = ReservationFormForClient(request.POST)
         if reservation_form.is_valid():
             service = SeDict.objects.get(id_se_dict = reservation_form.cleaned_data['service'])
+            se_req = SeRequirement.objects.get(service_code = service)
             datetime = reservation_form.cleaned_data['date']
 
             context = {'service' : service,
+                        'se_req' : se_req,
                        'datetime' : datetime}
 
             return render(request, 'services/reservation_summary.html', context)
 
 def get_resources_to_reservation(result):
     free_worker = result.free_workers[0]
-    free_machine = result.free_machines[0]
-    free_location = result.free_locations[0]
+    if result.free_machines[0] != '-':
+        free_machine = result.free_machines[0]
+    else:
+        free_machine = False
+    if result.free_locations[0] != '-':
+        free_location = result.free_locations[0]
+    else:
+        free_location = False
     resources = {'free_worker' : free_worker,
                 'free_machine' : free_machine,
                 'free_location' : free_location }
 
     return resources
-
+@login_required
+@user_passes_test(is_logged_client, login_url = '/clients/is_not_in_client_table/', redirect_field_name = None)
 def save_reservation(request):
     if request.method == 'POST':
         reservation_form = ReservationFormForClient(request.POST)
@@ -170,25 +187,28 @@ def save_reservation(request):
             if result is not None:
                 result = result[0]
                 client = Client.objects.get(client_user_login = request.user.id)
+                se_req = SeRequirement.objects.get(service_code = service_id)
 
                 new_service = Service()
                 new_service.service_code = service_id
                 new_service.client = client
                 new_service.create_invoice = facture
                 new_service.planned_start = date_time
-                if service_id.avg_time is not None:
-                    new_service.planned_end = date_time + datetime.timedelta(minutes = service_id.avg_time)
+                if se_req.time_minutes is not None:
+                    new_service.planned_end = date_time + datetime.timedelta(minutes = se_req.time_minutes)
                 new_service.save()
 
                 resources_to_reservation = get_resources_to_reservation(result)
                 new_resources_usage = ResourcesUsage()
                 new_resources_usage.service = new_service
-                new_resources_usage.machine = Machine.objects.get(id_machine = resources_to_reservation['free_machine'])
+                if  resources_to_reservation['free_machine'] != False:
+                    new_resources_usage.machine = Machine.objects.get(id_machine = resources_to_reservation['free_machine'])
                 new_resources_usage.worker = Worker.objects.get(id_worker = resources_to_reservation['free_worker'])
-                new_resources_usage.location = Location.objects.get(id_location = resources_to_reservation['free_location'])
+                if  resources_to_reservation['free_location'] != False:
+                    new_resources_usage.location = Location.objects.get(id_location = resources_to_reservation['free_location'])
                 new_resources_usage.start_timestamp = date_time
-                if service_id.avg_time is not None:
-                    new_resources_usage.finish_timestamp = date_time + datetime.timedelta(minutes = service_id.avg_time)
+                if se_req.time_minutes is not None:
+                    new_resources_usage.finish_timestamp = date_time + datetime.timedelta(minutes = se_req.time_minutes)
                 new_resources_usage.calendar_date = WorkdayCalendar(id_workday_calendar = date_time)
                 new_resources_usage.save()
 
@@ -200,6 +220,7 @@ def save_reservation(request):
 
 # Worker Service reservation
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def worker_reservation(request, id_client):
     services_groups = SeGroupDict.objects.all()
     services = SeDict.objects.all()
@@ -211,21 +232,25 @@ def worker_reservation(request, id_client):
 
     return render(request, 'services/calendar_for_worker_reservation.html', context)
 
-
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def generate_worker_reservation_summary(request):
     if request.method == 'POST':
         reservation_form = ReservationForm(request.POST)
         if reservation_form.is_valid():
             service = SeDict.objects.get(id_se_dict = reservation_form.cleaned_data['service'])
             datetime = reservation_form.cleaned_data['date']
+            se_req = SeRequirement.objects.get(service_code = service)
             client = Client.objects.get(id_client = reservation_form.cleaned_data['id_client'])
+            datetime = reservation_form.cleaned_data['date']
 
         context = { 'client' : client,
+                    'datetime' : datetime,
                     'service' : service,
-                    'datetime' : datetime}
+                    'se_req' : se_req,}
 
         return render(request, 'services/reservation_worker_summary.html', context)
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def save_worker_reservation(request):
     if request.method == 'POST':
         reservation_form = ReservationForm(request.POST)
@@ -241,25 +266,28 @@ def save_worker_reservation(request):
 
             if result is not None:
                 result = result[0]
+                se_req = SeRequirement.objects.get(service_code = service_id)
 
                 new_service = Service()
                 new_service.service_code = service_id
                 new_service.client = client
                 new_service.create_invoice = facture
                 new_service.planned_start = date_time
-                if service_id.avg_time is not None:
-                    new_service.planned_end = date_time + datetime.timedelta(minutes = service_id.avg_time)
+                if se_req.time_minutes is not None:
+                    new_service.planned_end = date_time + datetime.timedelta(minutes = se_req.time_minutes)
                 new_service.save()
 
                 resources_to_reservation = get_resources_to_reservation(result)
                 new_resources_usage = ResourcesUsage()
                 new_resources_usage.service = new_service
-                new_resources_usage.machine = Machine.objects.get(id_machine = resources_to_reservation['free_machine'])
+                if  resources_to_reservation['free_machine'] != False:
+                    new_resources_usage.machine = Machine.objects.get(id_machine = resources_to_reservation['free_machine'])
                 new_resources_usage.worker = Worker.objects.get(id_worker = resources_to_reservation['free_worker'])
-                new_resources_usage.location = Location.objects.get(id_location = resources_to_reservation['free_location'])
+                if  resources_to_reservation['free_location'] != False:
+                    new_resources_usage.location = Location.objects.get(id_location = resources_to_reservation['free_location'])
                 new_resources_usage.start_timestamp = date_time
-                if service_id.avg_time is not None:
-                    new_resources_usage.finish_timestamp = date_time + datetime.timedelta(minutes = service_id.avg_time)
+                if se_req.time_minutes is not None:
+                    new_resources_usage.finish_timestamp = date_time + datetime.timedelta(minutes = se_req.time_minutes)
                 new_resources_usage.calendar_date = WorkdayCalendar(id_workday_calendar = date_time)
                 new_resources_usage.save()
 
@@ -284,9 +312,9 @@ def calculate_date_to_display():
 
 def generate_calendar(request):
 
-    if request.method == 'POST' and request.is_ajax():
+    if request.method == 'GET' and request.is_ajax():
 
-        service = SeDict.objects.get(id_se_dict = request.POST.get('service_code'))
+        service = SeDict.objects.get(id_se_dict = request.GET.get('service_code'))
 
         workday_calendar = WorkdayCalendarParams.objects.get(id_workday_calendar_params = 1)
 
@@ -331,7 +359,7 @@ def generate_calendar(request):
 #     sqlResult = sqlSelect()
 #     return render(request, 'company/sql.html', {'queryResult': sqlResult})
 
-
+@user_passes_test(is_logged_and_in_worker_table, login_url = '/workers/is_not_in_worker_table/', redirect_field_name = None)
 def generate_worker_calendar(request):
 
     if request.method == 'GET' and request.is_ajax():

@@ -1,11 +1,13 @@
-body{
-  height: 1000px;
-}
 
 
 #calendar{
   margin-left: 2%;
   margin-right: 2%;
+}
+
+#calendar-box{
+  margin-top: 4vh;
+  margin-bottom: 10vh;
 }
 
 .select-service{
@@ -22,7 +24,9 @@ body{
 }
 
 #select-service-group-box{
+  margin-top: 5vh;
   text-align: center;
+  margin-bottom: 3vh;
 }
 #select-service-group-box h3{
   text-align: center;

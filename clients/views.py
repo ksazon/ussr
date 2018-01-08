@@ -13,14 +13,20 @@ from django.core.mail import send_mail
 from .filters import ClientTableFilter
 from services.forms import ReportFormatForm
 from django_tables2.export.export import TableExport
-
+from django.contrib.auth.decorators import user_passes_test
+from workers.views import is_logged_employee
 
 
 def is_logged_client(user):
-    if user is not None:
-        return Client.objects.get(client_user_login = user.id).exists()
+    if user.is_authenticated:
+        return Client.objects.filter(client_user_login = user.id).exists()
+
+
+def is_not_in_client_table(request):
+    return render(request, 'clients/is_not_in_client_table.html')
 
 @login_required
+@user_passes_test(is_logged_client, login_url = '/clients/is_not_in_client_table/', redirect_field_name = None)
 def change_personal_informations(request):
 
     try:
@@ -71,6 +77,7 @@ def change_personal_informations(request):
 
     return render(request, 'clients/personal_informations.html', context)
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def Client_table(request):
     if request.method == 'GET':
         clients = Client.objects.all()
@@ -83,7 +90,7 @@ def Client_table(request):
 
         return render(request, 'clients/client_table.html', context)
 
-@login_required
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def clientCRUDlist(request):
 
     clients = Client.objects.all()
@@ -105,6 +112,7 @@ def clientCRUDlist(request):
 
     return render(request, 'clients/clientCRUDlist.html', context)
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def CreateClient(request):
     if request.method == 'POST' and request.is_ajax():
         client = Client()
@@ -131,6 +139,7 @@ def CreateClient(request):
 
         return render(request, 'clients/new_client_form.html', context)
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def GenerateTable(request):
     clients = Client.objects.all()
     client_table = ClientTable(clients).order_by = 'last_name'
@@ -142,7 +151,7 @@ def GenerateTable(request):
 
     return render(request, 'clients/clientCRUDlist.html', context)
 
-
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def DeleteClient(request):
     if request.method == 'POST' and request.is_ajax():
 
@@ -162,6 +171,7 @@ def DeleteClient(request):
 
         return JsonResponse({'success' : 'success'})
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def EditClientFormFill(request):
     if request.method == 'POST' and request.is_ajax():
         post_id_client = request.POST.get("id")
@@ -196,6 +206,7 @@ def EditClientFormFill(request):
 
         return render(request, 'clients/editform.html', context)
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def EditClient(request):
 
     if request.method == 'POST':
@@ -221,6 +232,7 @@ def EditClient(request):
 
         return render(request, 'clients/editform.html', context)
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def EmailCheck(request):
 
     if request.method == 'POST':
@@ -232,6 +244,7 @@ def EmailCheck(request):
         else:
             return JsonResponse({'email' : True})
 
+@user_passes_test(is_logged_employee, login_url = '/users/login/', redirect_field_name = None)
 def SendEmail(request):
 
     if request.method == 'POST':
@@ -248,7 +261,7 @@ def SendEmail(request):
             fail_silently=False)
             return JsonResponse({'success' : "success"})
 
-
+@user_passes_test(is_logged_client, login_url = '/clients/is_not_in_client_table/', redirect_field_name = None)
 def generate_clients_report(request):
 
     if request.method == 'GET':

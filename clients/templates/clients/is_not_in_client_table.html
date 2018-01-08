@@ -1,0 +1,14 @@
+{% extends "MainPage/base.html" %}
+
+{% block content%}
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static "clients/is_not_client.css" %}" />
+
+<div id = "message-box">
+  <p id = "first-line">Przepraszamy! Nie jesteś zarejestrowany w tabeli klientów.</p>
+  <p id = "second-line">W celu nadania lub przywrócenia klienta
+    <a href = "/contact_form/" id = "contact">skontaktuj się z nami.</a><p>
+
+</div>
+
+{% endblock %}

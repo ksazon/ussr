@@ -10,6 +10,10 @@ function OffEmailForm(){
 
 $(document).ready(function() {
 
+  $( '#delete-client-button' ).click(function( event ){
+      event.preventDefault();
+      $('#client-table-form').submit();
+  });
 
   $( '#client-form' ).submit(function( event ){
       event.preventDefault();
@@ -96,6 +100,16 @@ function tableLoadHandlers(){
       location.href = "/services/worker_reservation/" + this.value;
   });
 
+  $( '#delete-client-button' ).click(function( event ){
+      event.preventDefault();
+      $('#client-table-form').submit();
+  });
+
+  $( '#client-table-form' ).submit(function( event ){
+      event.preventDefault();
+      console.log("DELETE");
+      delete_client();
+  });
 }
 
 function email_check(id) {
@@ -140,6 +154,7 @@ function delete_client() {
         // handle a successful response
         success : function(response) {
             $('#client-form').trigger("reset");
+            $('#delete-client-button').unbind();
             get_client_table();
             console.log("success"); // another sanity check
         },

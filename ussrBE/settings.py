@@ -172,6 +172,6 @@ EMAIL_USE_TLS = True
 
 # Settings for django-bootstrap4
 BOOTSTRAP4 = {
-    'jquery_url': 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
+    'jquery_url': 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js',
     'include_jquery': True,
     }

@@ -8,7 +8,6 @@
 
 <head>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/locale/pl.js"></script>
   <script type="text/javascript" src='{% static 'services/scripts/main.js' %}'></script>
@@ -17,6 +16,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" />
   <link rel="stylesheet" media="print" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.print.css" />
   <link rel="stylesheet" href="{% static 'services/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'services/calendar_site.css' %}" />
 
   {% csrf_token %}
   <script type="text/javascript">
@@ -26,6 +26,7 @@
 
 </head>
 <body>
+  <div id = "whole-page">
 
   <div id = "select-service-group-box">
     <h3>Wybierz grupę usług</h3>
@@ -56,10 +57,7 @@
   <div id = 'calendar-box'>
   </div>
 
-  <div id = "reservation-confirm-window">
-    <div id = "reservation-confirm-box">
-    </div>
-  </div>
+
 
 <form action="/services/worker_summary/" method = "POST" id = "reservation-form">
   {% csrf_token %}
@@ -68,5 +66,21 @@
   <input type="hidden" name="date" id = "date">
 </form>
 
+<div class="modal fade" id="reservation-confirm-modal" tabindex="-2" role="dialog" aria-labelledby="edit-client" aria-hidden="true" data-backdrop="false" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Edit-Title">Potwierdzenie rezerwacji</h5>
+        </button>
+      </div>
+      <div class="modal-body" id = "reservation-confirm-box">
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
 </body>
 {% endblock content %}

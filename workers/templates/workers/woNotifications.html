@@ -6,19 +6,22 @@
 
 {% block content %}
 <br>
-<a href="{% url 'workers:new_woNotification' %}"><button type="button" class="btn btn-primary">Dodaj nowy alert</button></a>
+<div class="col-md-8 offset-md-3"><a href="{% url 'workers:new_woNotification' %}"><button type="button" class="btn btn-primary">Dodaj nowy alert</button></a></div>
 <br>
 <br>
-  <ul>
+<div class="row">
+<div class="col-md-8 offset-md-2">
     {% for woNotification in woNotifications %}
-      <li>
-        <p><a href="{% url 'workers:woNotification' woNotification.id_wo_notification %}"><button type="button" class="btn btn-primary">{{ woNotification }}</button></a> - <b>Pracownik:</b> {{ woNotification.worker }}</p>
-          <p><b>Temat:</b> {{ woNotification.notification_subject }}</p>
-          <p><b>Tekst:</b> {{ woNotification.notification_text }}</p>
-      </li>
+        <div class="card-header"><a href="{% url 'workers:woNotification' woNotification.id_wo_notification %}">
+          <button type="button" class="btn btn-primary">{{ woNotification }}</button></a> - <b>Pracownik:
+          </b> {{ woNotification.worker }}</div>
+          <div class="card-body">
+            <h5 class="card-title"><b>Temat: {{ woNotification.notification_subject }}</b></h5>
+          <p><b>Treść:</b> {{ woNotification.notification_text }}</p></div>
     {% empty %}
-      <li>Obecnie brak notatek.</li>
+      <p>Obecnie brak notatek.</p>
     {% endfor %}
-  </ul>
 
+</div>
+</div>
 {% endblock content %}

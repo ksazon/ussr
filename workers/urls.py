@@ -10,10 +10,11 @@ urlpatterns = [
     url(r'^wRaport1/', views.wRaport1, name='wRaport1'),
     url(r'^wRaport2/', views.wRaport2, name='wRaport2'),
     url(r'^wRaport3/', views.wRaport3, name='wRaport3'),
+    url(r'^wRaport4/', views.wRaport4, name='wRaport4'),
     url(r'^woNotification/(?P<woNotification_id>\w+)/', views.woNotification, name='woNotification'),
     url(r'^edit_woNotification/(?P<woNotification_id>\w+)/$', views.edit_woNotification, name='edit_woNotification'),
     url(r'^new_woNotification/', views.new_woNotification, name='new_woNotification'),
     url(r'^personal/', views.change_personal_informations, name='personal_informations'),
-    url(r'^clients/', clientCRUDlist, name='client_list')
-
+    url(r'^clients/', clientCRUDlist, name='client_list'),
+    url(r'^is_not_in_worker_table/', views.is_not_in_worker_table, name='is_not_in_worker_table'),
 ]

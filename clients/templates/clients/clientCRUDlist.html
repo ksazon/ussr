@@ -11,7 +11,7 @@
   <script src="{% static "clients/scripts/main.js" %}"></script>
   <script src="{% static "clients/scripts/report.js" %}"></script>
   <link rel="stylesheet" type="text/css" href="{% static "clients/style.css" %}" />
-
+  <link rel="stylesheet" href="{% static "clients/client_list.css" %}" />
 
   {% csrf_token %}
   <script type="text/javascript">
@@ -21,8 +21,9 @@
 
 <body id = "body">
   {% include "clients/client_table_filter.html" %}
-<div>
+<div id = "buttons">
   <button type="button" data-toggle="modal" data-target="#newmodal">Dodaj klienta</button>
+  <button type="button" id = "delete-client-button">Usuń zaznaczonych klientów</button>
   {% for field in format_form%}
   <form id = "format-form">Wybierz format raportu: {{field}}<button type="button" onclick="get_report(old_form_data);">Pobierz raport</button></form>
   {% endfor %}
