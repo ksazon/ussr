@@ -1,23 +1,40 @@
 {% extends "MainPage/base.html" %}
-
 {% block content %}
 {% load static %}
-  <h1>Nasze wszechstronne usługi:</h1>
-<ul>
-  <div class="row">
-  <div class="col-md-6 offset-md-1">
-      <div class="form-group">
-  {% for group in services_groups %}
-<br>
-   <h4><b>{{group.se_group_dict_name}}</b></h4>
-    {% for service in group.services_in_group.all %}
-    <li> <h5> {{service.se_dict_name}} </h5>
-      <p> {{service.notes}} </p> </li>
-      {% endfor %}
-   {% endfor %}
- </div>
-   </div>
-   </div>
-</ul>
 
-  {% endblock content %}
+<p class="header">Nasze oferta:</p>
+
+<div id="services">
+  {% for category in categories %}
+
+      <button class="category" onclick="myFunction('{{category.id_se_group_dict}}')">
+            {{category.se_group_dict_name}}
+      </button>
+
+        <div class="service"  id="{{category.id_se_group_dict}}">
+            <table>
+              {% for service in services %}
+
+                  {% ifequal service.se_group|stringformat:"s"  category.id_se_group_dict|stringformat:"s"  %}
+                      <tr>
+                          <td class="name">
+                              {{ service.se_dict_name }}
+                          </td class="price">
+                          <td>
+                              {{service.base_price}}
+                          </td class="book_button">
+                          <td>
+                              <button class="book">Zarezerwuj</button>
+                          </td>
+                      </tr>
+                  {% endifequal %}
+
+                  {% empty %}
+                  <li>Niestety oferty w wybranej kategorii aktualnie są niedostępne.</li>
+              {%endfor%}
+            </table>
+        </div>
+  {% endfor %}
+</div>
+
+{% endblock content %}

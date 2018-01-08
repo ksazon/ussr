@@ -112,10 +112,18 @@ footer {
   text-align: center;
   background-color: #212529;
   color:white;
+  position: fixed;
+width: 100%;
+bottom: 0;
 }
 
 #footer-powered p{
   margin-bottom: 0;
+}
+.map-box{
+  width: 400px;
+  height: 300px;
+  padding-bottom: 20px;
 }
 
 
@@ -156,4 +164,68 @@ footer {
 #contact-form-text{
   font-size: 30px;
   margin-bottom: 4vh;
+}
+
+.service{
+  display: none;
+}
+td {
+    text-align: left;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+#services{
+  width: 80%;
+  margin: auto;
+}
+
+.category{
+  margin-left: 0;
+  height: 50px;
+  width: 100%;
+  background: #212529;
+  color:white;
+
+}
+
+table{
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+.name{
+  width: 70%;
+}
+.price{
+  width: 15%;
+}
+.book_button{
+  width: 15%;
+  margin-right: 0;
+  margin-left: auto;
+  align: right;
+}
+@import url(https://fonts.googleapis.com/css?family=Arvo:700);
+@import url(https://fonts.googleapis.com/css?family=Seaweed+Script);
+
+.header {
+  font-family: "Seaweed Script";
+  color: #212529;
+  text-align: center;
+  font-size: 40px;
+  position: relative;
+  margin:0;
+}
+.book{
+  background-color: rgb(71, 168, 25);
+  border-color: rgb(19, 88, 15);
+  margin-left: auto;
+  margin-right: 0;
+  width: 100px;
+  height: 80%;
+  font-size: ;
+  resize: both;
+  overflow: auto;
 }

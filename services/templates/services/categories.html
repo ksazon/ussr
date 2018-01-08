@@ -1,0 +1,15 @@
+{% extends "MainPage/base.html" %}
+
+{% block content %}
+{% load static %}
+  <p>Kategorie usług:</p>
+  <ul>
+    {% for service in services %}
+      <li>
+        <a href="{% url 'services:service' service.id_se_group_dict %}">{{service.se_group_dict_name}}</a>
+	    </li>
+      {% empty %}
+        <li>Brak kategorii.</li>
+    {% endfor %}
+  </ul>
+{% endblock content %}

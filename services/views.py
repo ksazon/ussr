@@ -26,11 +26,18 @@ from clients.views import is_logged_client
 from django.contrib.auth.decorators import user_passes_test
 
 
-def services(request):
-    services_groups = SeGroupDict.objects.all()
-    services = SeDict.objects.all()
-    context = {'services_groups': services_groups, 'services': services}
+def service(request, segroupdict_id):
+    service = SeDict.objects.filter(se_group=segroupdict_id)
+    context = {'services': service}
     return render(request, 'services/services.html', context)
+
+
+def services(request):
+    segroupdict = SeGroupDict.objects.all()
+    services = SeDict.objects.all()
+    context = {'services': services, 'categories': segroupdict}
+    return render(request, 'services/services.html', context)
+
 
 # Displaying Services
 @login_required
