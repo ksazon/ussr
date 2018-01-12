@@ -179,15 +179,14 @@ def wRaport4(request):
 @user_passes_test(is_logged_and_in_worker_table, login_url = '/employee/is_not_in_worker_table/', redirect_field_name = None)
 def wRaport5(request):
     machines = Machine.objects.all()
-    last_service = Machine.last_service
-    service_interval = Machine.service_interval
     arr = []
     for machine in machines:
+        need_to_be_serviced = False
         if machine.last_service != None:
             if machine.service_interval != None:
-                if last_service > datetime.date.today() - datetime.timedelta(days = service_interval):
-                    is_costam = True
-                if iscostam == True:
+                if machine.last_service < datetime.date.today() - datetime.timedelta(days = machine.service_interval):
+                    need_to_be_serviced = True
+                if need_to_be_serviced == True:
                     arr.append(machine.id_machine)
 
     machines = Machine.objects.filter(id_machine__in = arr)
