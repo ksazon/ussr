@@ -12,10 +12,8 @@ function submitreservation(){
           }
       },
       error : function(response) {
-      else{
         $('#success-modal').modal('show');
         $('#ok-button').before('<p> Rezerwacja sie nie udala</p>');
-      }
     }
   });
 }
